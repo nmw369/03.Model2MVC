@@ -1,22 +1,22 @@
 
-<%@page import="com.model2.mvc.service.domain.User"%>
-<%@page import="com.model2.mvc.service.domain.Product"%>
+<%-- <%@page import="com.model2.mvc.service.domain.User"%>
+<%@page import="com.model2.mvc.service.domain.Product"%> --%>
 <%@ page contentType="text/html;charset=EUC-KR"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-
-<%
+<%-- <%
 	Product productVO = (Product) request.getAttribute("prodVO");
 	System.out.println("ADDPURVIEW확인 +++++++::"+productVO);
 	User userVO = (User) session.getAttribute("user");
 	System.out.println("ADDPURVIEW확인 +++++++::"+userVO);
-%>
+%> --%>
 <html>
 	<head>
 	
 		<link rel="stylesheet" href="/css/admin.css" type="text/css">
 		
-		<title>Insert title here</title>
+		<title>purView</title>
 		
 		<script type="text/javascript" src="../javascript/calendar.js">
 		</script>
@@ -51,7 +51,7 @@
 			</tr>
 		</table>
 		
-		<input type="hidden" name="prodNo" value="<%=productVO.getProdNo() %>" />
+		<input type="hidden" name="prodNo" value="${prodVO.prodNo}" />
 		
 		<table width="600" border="0" cellspacing="0" cellpadding="0"	align="center" style="margin-top: 13px;">
 			<tr>
@@ -68,7 +68,7 @@
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
 							<td width="105">
-								<%=productVO.getProdNo() %>
+								${prodVO.prodNo}
 							</td>
 						</tr>
 					</table>
@@ -85,7 +85,7 @@
 				</td>
 				<td bgcolor="D6D6D6" width="1"></td>
 				<td class="ct_write01">
-					<%=productVO.getProdName() %>
+					${prodVO.prodName}
 				</td>
 			</tr>
 			<tr>
@@ -99,7 +99,7 @@
 				<td bgcolor="D6D6D6" width="1">
 				</td>
 				<td class="ct_write01">
-					<%=productVO.getProdDetail() %>
+					${prodVO.prodDetail}
 				</td>
 			</tr>
 			<tr>
@@ -112,7 +112,7 @@
 				<td bgcolor="D6D6D6" width="1">
 				</td>
 				<td class="ct_write01">
-					<%=productVO.getManuDate() %>
+					${prodVO.manuDate}
 				</td>
 			</tr>
 			<tr>
@@ -126,7 +126,7 @@
 				<td bgcolor="D6D6D6" width="1">
 				</td>
 				<td class="ct_write01">
-					<%=productVO.getPrice() %>
+					${prodVO.price}
 				</td>
 			</tr>
 			<tr>
@@ -139,7 +139,7 @@
 				<td bgcolor="D6D6D6" width="1">
 				</td>
 				<td class="ct_write01">
-					<%=productVO.getRegDate() %>
+					${prodVO.regDate}
 				</td>
 			</tr>
 			<tr>
@@ -153,9 +153,9 @@
 				<td bgcolor="D6D6D6" width="1">
 				</td>
 				<td class="ct_write01">
-					<%=userVO.getUserId() %>
+					${user.userId}
 				</td>
-				<input type="hidden" name="buyerId" value="<%=userVO.getUserId() %>" />
+				<input type="hidden" name="buyerId" value="${user.userId}" />
 			</tr>
 			<tr>
 				<td height="1" colspan="3" bgcolor="D6D6D6">
@@ -184,7 +184,7 @@
 				<td bgcolor="D6D6D6" width="1">
 				</td>
 				<td class="ct_write01">
-					<input type="text" name="receiverName" 	class="ct_input_g" style="width: 100px; height: 19px" maxLength="20" value="<%=userVO.getUserName() %>" />
+					<input type="text" name="receiverName" 	class="ct_input_g" style="width: 100px; height: 19px" maxLength="20" value="${user.userName}" />
 				</td>
 			</tr>
 			<tr>
@@ -198,7 +198,7 @@
 				<td bgcolor="D6D6D6" width="1">
 				</td>
 				<td class="ct_write01">
-					<input 	type="text" name="receiverPhone" class="ct_input_g" style="width: 100px; height: 19px" maxLength="20" value="<%=userVO.getPhone() %>" />
+					<input 	type="text" name="receiverPhone" class="ct_input_g" style="width: 100px; height: 19px" maxLength="20" value="${user.phone}" />
 				</td>
 			</tr>
 			<tr>
@@ -211,7 +211,7 @@
 				<td bgcolor="D6D6D6" width="1">
 				</td>
 				<td class="ct_write01">
-					<input 	type="text" name="receiverAddr" class="ct_input_g" style="width: 100px; height: 19px" maxLength="20" 	value="<%=userVO.getAddr() %>" />
+					<input 	type="text" name="receiverAddr" class="ct_input_g" style="width: 100px; height: 19px" maxLength="20" 	value="${user.addr}" />
 				</td>
 			</tr>
 			<tr>

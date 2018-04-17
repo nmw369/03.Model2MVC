@@ -31,6 +31,16 @@
 	}
 -->
 </script>
+<style>
+body{
+    background: url("/images/sky.gif") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+</style>
 
 </head>
 
@@ -50,7 +60,7 @@
     	<table width="650" height="390" border="0" cellpadding="0" cellspacing="0">
         <tr>
           <td width="305">
-            <img src="/images/logo-spring.png" width="305" height="390"/>
+            <img src="/images/logo-spring.png" width="305" height="390">
           </td>
           <td width="345" align="left" valign="top" background="/images/login02.gif">
           	<table width="100%" height="220" border="0" cellpadding="0" cellspacing="0">

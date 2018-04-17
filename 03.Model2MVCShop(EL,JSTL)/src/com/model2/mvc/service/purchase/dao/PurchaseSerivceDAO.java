@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.model2.mvc.common.Search;
 import com.model2.mvc.common.util.DBUtil;
+import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.domain.Purchase;
 import com.model2.mvc.service.product.dao.ProductDAO;
 import com.model2.mvc.service.user.dao.UserDao;
@@ -67,7 +68,7 @@ public class PurchaseSerivceDAO {
 			vo.setTranCode(rs.getString(9));
 			vo.setOrderDate(rs.getDate(10));
 			vo.setDivyDate(rs.getString(11));
-				
+			System.out.println(rs.getString(11)+"====================================!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");	
 			
 //		vo.setPurchaseProd(new ProductDAO().findProduct(rs.getInt("prod_no")));
 //		vo.setBuyer(new UserDAO().findUser(rs.getString("buyer_id")));
@@ -91,52 +92,79 @@ public class PurchaseSerivceDAO {
 	} 
 	public HashMap<String, Object> getPurchaseList(Search search,String userId) throws Exception {
 		
-		String sql = "select tran_no,buyer_id ,receiver_name,receiver_phone,tran_status_code,prod_no from transaction where BUyer_id=?";
+		String sql = "select buyer_id ,receiver_name,receiver_phone,tran_status_code,tran_no,prod_no from transaction where BUyer_id='"+userId+"'";
 		Connection con = DBUtil.getConnection();
-		PreparedStatement stmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,	ResultSet.CONCUR_UPDATABLE);
 		
-		stmt.setString(1, userId);
+		System.out.println(sql+"::::::=====0");
+		
+		//==> TotalCount GET
+		int totalCount = this.getTotalCount(sql);
+		System.out.println("PurchaseDAO :: totalCount :: "+totalCount);
+		
+		System.out.println(sql+"::::::=====1");
+		
+		//==> CurrentPage 게시물만 받도록 Query 다시구성
+		sql = makeCurrentPageSql(sql, search);
+		
+		System.out.println(sql+"::::::=====2");
+		
+		PreparedStatement stmt = con.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		
-		rs.last();
-		int total = rs.getRow();
-		System.out.println("PurchaseServiceDAO 로우수:"+total);
-		
+		//받은 총row수 저장	
 		HashMap<String, Object> map = new HashMap<String,Object>();
-		map.put("count", new Integer(total));
+		map.put("totalCount", new Integer(totalCount));
 		
-		rs.absolute(search.getCurrentPage()* search.getPageSize() - search.getPageSize()+1);
-		//~.absolute(): 주어진 열로 커서를 이동시킨다.
 		
-		System.out.println("DAOsearch.getPage():" + search.getCurrentPage());
-		System.out.println("DAOsearch.getPageUnit():" + search.getPageSize());
-		
+		/////////////
+				
 		List<Purchase> list = new ArrayList<Purchase>();
 		
-		if(total>0) {
+		List<Product> proVo = new ArrayList<Product>();
+		
+		while(rs.next())
 			for (int i = 0; i < search.getPageSize(); i++) {
 				Purchase vo = new Purchase();
-				
-				vo.setBuyer(new UserDao().findUser(rs.getString("buyer_id")));
-				vo.setReceiverName(rs.getString("receiver_name"));
-				vo.setReceiverPhone(rs.getString("receiver_phone"));
-				vo.setTranCode(rs.getString("tran_status_code"));
-				vo.setTranNo(rs.getInt("tran_no"));
-				vo.setPurchaseProd(new ProductDAO().findProduct(rs.getInt("prod_no")));
+				vo.setBuyer(new UserDao().findUser(rs.getString(1)));
+				vo.setReceiverName(rs.getString(2));
+				vo.setReceiverPhone(rs.getString(3));
+				vo.setTranCode(rs.getString(4));
+				vo.setTranNo(rs.getInt(5));
+				vo.setPurchaseProd(new ProductDAO().findProduct(rs.getInt(6)));
 				
 				list.add(vo);
-				if(!rs.next()) {
-					break;
+				
+				/*Product vo2 = new Product();
+				String sql2 = "Select*from product where prod_no=?";
+				PreparedStatement stmt2 = con.prepareStatement(sql2);
+				stmt2.setInt(1,rs.getInt(6));
+				ResultSet rs2 = stmt2.executeQuery();
+				while(rs.next()) {
+					vo2.setProdNo(rs2.getInt(1));
+					vo2.setProdName(rs2.getString(2));
+					vo2.setProdDetail(rs2.getString(3));
+					vo2.setManuDate(rs2.getString(4));
+					vo2.setPrice(rs2.getInt(5));
+					vo2.setFileName(rs2.getString(6));
+					vo2.setRegDate(rs2.getDate(7));
+					
+					proVo.add(vo2);
 				}
+				map.put("vo2",vo2);
+				System.out.println(vo2);*/
 			}
-			System.out.println("list.size() : "+ list.size());
-			map.put("list", list);
-			System.out.println("map().size() : "+ map.size());
-			System.out.println("list들어간값 확인 : "+list.get(0).getReceiverName());
-			System.out.println("list들어간값 확인!!!!!! : "+list.get(0).getTranNo());
-			System.out.println("list들어간 ProdNo 확인!!!!!! : "+list.get(0).getPurchaseProd().getProdNo());
+		
+		System.out.println("list.size() : "+ list.size());
+		//list 값 전송
+		map.put("list", list);
+		
+		
 			
-		}
+		System.out.println("map().size() : "+ map.size());
+		System.out.println("list들어간값 확인 : "+list.get(0).getReceiverName());
+		System.out.println("list들어간값 확인!!!!!! : "+list.get(0).getTranNo());
+		System.out.println("list들어간 ProdNo 확인!!!!!! : "+list.get(0).getPurchaseProd().getProdNo());
+			
 		
 		rs.close();
 		stmt.close();
@@ -202,5 +230,49 @@ public class PurchaseSerivceDAO {
 		con.close();
 		
 	}
+	// 게시판 Page 처리를 위한 전체 Row(totalCount)  return
+			private int getTotalCount(String sql) throws Exception {
+				
+				System.out.println("=====getTotalCount method start=====");
+				
+				sql = "SELECT COUNT(*) FROM ( " +sql+ ") countTable";
+				
+								
+				Connection con = DBUtil.getConnection();
+				PreparedStatement pStmt = con.prepareStatement(sql);
+				ResultSet rs = pStmt.executeQuery();
+					
+				
+				int totalCount = 0;
+				if( rs.next() ){
+					totalCount = rs.getInt(1);
+				}
+				
+				pStmt.close();
+				con.close();
+				rs.close();
+				
+				System.out.println("=====getTotalCount method end....=====");
+				
+				return totalCount;
+			}
+			
+			// 게시판 currentPage Row 만  return 
+			private String makeCurrentPageSql(String sql , Search search){
+				
+				System.out.println("=====makeCurrentPageSql method start=====");
+				
+				sql = 	"SELECT * "+ 
+							"FROM (		SELECT inner_table. * ,  ROWNUM AS row_seq " +
+											" 	FROM (	"+sql+" ) inner_table "+
+											"	WHERE ROWNUM <="+search.getCurrentPage()*search.getPageSize()+" ) " +
+							"WHERE row_seq BETWEEN "+((search.getCurrentPage()-1)*search.getPageSize()+1) +" AND "+search.getCurrentPage()*search.getPageSize();
+				
+				System.out.println("ProductDAO :: make SQL :: "+ sql);	
+				
+				System.out.println("=====makeCurrentPage method end....=====");
+				
+				return sql;
+			}
 	
 }

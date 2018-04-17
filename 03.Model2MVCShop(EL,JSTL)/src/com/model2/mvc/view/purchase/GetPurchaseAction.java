@@ -19,8 +19,8 @@ public class GetPurchaseAction extends Action{
 		System.out.println(tranNo+":::GET의 tranNo");// 여기까지 들어옴
 		PurchaseService service =new PurchaseServiceImpl();
 		Purchase purchase = service.getPurchase(tranNo);
-		System.out.println(purchase+"::: GetPuchase 확인!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		request.setAttribute("purchaseVO", purchase);
+		System.out.println("::: GetPuchase 확인!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+purchase);
+		request.setAttribute("pur", purchase);
 		
 		
 		return "forward:/purchase/getPurchase.jsp";

@@ -37,7 +37,6 @@ public class ListProductAction extends Action {
 		search.setSearchKeyword(request.getParameter("searchKeyword"));
 		
 		// web.xml meta-data 로 부터 상수 추출
-		// 
 		int pageSize = Integer.parseInt(getServletContext().getInitParameter("pageSize"));//3
 		int pageUnit = Integer.parseInt(getServletContext().getInitParameter("pageUnit"));//5
 		search.setPageSize(pageSize);
@@ -62,7 +61,7 @@ public class ListProductAction extends Action {
 		
 		String role = user.getRole();
 		
-		System.out.println("======================접속아이디체크==============================="+role);
+		//System.out.println("======================접속아이디체크==============================="+role);
 		/*String uri = "";
 		if(role.equals("admin")) {
 			uri="/product/listProduct.jsp";
