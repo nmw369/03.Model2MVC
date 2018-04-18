@@ -127,8 +127,19 @@ public class ProductDAO {
 				sql += " and p.PRICE Like '%" + search.getSearchKeyword()+"%'";
 			}
 		}
-		sql += " order by p.REG_DATE desc nulls last";
 		
+		if(search.getSorting().equals("high")) {
+			sql += " order by p.price desc nulls last";
+		}else{
+		sql += " order by p.price asc nulls last";
+		}
+		
+		
+		if(search.getDaySorting().equals("highDay")){
+			sql += " , p.reg_date desc nulls last";
+		}else{
+			sql += " , p.reg_date asc nulls last";
+		}
 		
 		
 		System.out.println("ProductDAO::Original SQL :: " + sql);

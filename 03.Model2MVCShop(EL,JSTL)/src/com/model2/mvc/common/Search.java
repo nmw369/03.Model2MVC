@@ -8,10 +8,32 @@ public class Search {
 	private String searchCondition;
 	private String searchKeyword;
 	private int pageSize;
+	private String sorting;
+	private String daySorting;
+	
 	
 	///Constructor
-	public Search() {
+			public Search() {
+			}
+		
+	public String getDaySorting() {
+		return daySorting;
 	}
+
+	public void setDaySorting(String daySorting) {
+		this.daySorting = daySorting;
+	}
+
+		
+	public String getSorting() {
+		return sorting;
+	}
+
+	public void setSorting(String sorting) {
+		this.sorting = sorting;
+	}
+
+	
 	
 	///Method
 	public int getPageSize() {

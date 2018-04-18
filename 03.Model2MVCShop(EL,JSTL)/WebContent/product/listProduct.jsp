@@ -8,10 +8,10 @@
 <head>
 <title>상품 목록조회</title>
 <link rel="stylesheet" href="/css/admin.css" type="text/css" >
-<!-- <style>
+ <style>
 
 
- body{
+/*  body{
     background: url("/images/sunset.jpg") no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -19,8 +19,8 @@
     background-size: cover;
     
      
-} 
-</style> -->
+}  */
+</style>
 
 <script type="text/javascript">
 	function fncGetList(currentPage){
@@ -28,13 +28,12 @@
 		document.getElementById("currentPage").value = currentPage;
 		document.detailForm.submit();
 	}
-	function fncGetList2(currentPage,searchKeyword,searchCondition){
+	 function fncGetList2(currentPage,sorting){
 			
 		document.getElementById("currentPage").value = currentPage;
-		document.getElementById("searchKeyword").value = searchKeyword;
-		document.getElementById("searchCondition").value = searchCondition;
+		document.getElementById("sorting").value = sorting;
 		document.detailForm.submit();
-	}
+	} 
 </script>
 </head>
 
@@ -82,8 +81,8 @@
 				<option value="1" ${search.searchCondition =="1"? "selected" : ""}>상품명</option>
 				<option value="2" ${search.searchCondition =="2"? "selected" : ""}>상품가격</option>
 			</select>
-			<input type="text" name="searchKeyword"  class="ct_input_g" style="width:200px; height:19px"  
-			onkeypress="if(event.keyCode == 13){ javascript:fncGetList('1')};">
+			<input type="text" name="searchKeyword"  class="ct_input_g" style="width:200px; height:19px" 
+			value="${search.searchKeyword}" onkeypress="if(event.keyCode == 13){ javascript:fncGetList('1')};">
 		</td>
 		
 		
@@ -108,7 +107,10 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
 		<td colspan="11" >
-		전체  ${resultPage.totalCount } 건, 현재 ${resultPage.currentPage} 페이지
+		전체  ${resultPage.totalCount } 건, 현재 ${resultPage.currentPage} 페이지 
+		<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;상품가격 
+		&nbsp;<input type="button" onClick="location.href='/listProduct.do?sorting=high'" value="높은순&nabla;">
+		 <input type="button" onClick="location.href='/listProduct.do?sorting=low'" value="낮은순&Delta;">  -->
 		</td>
 	</tr>
 	<tr>
@@ -118,9 +120,27 @@
 		<td class="ct_line02"></td>
 		<td class="ct_list_b" width="150">상품명</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="100">가격</td>
+		<td class="ct_list_b" width="100" >
+		<c:if test="${sorting=='low'}">
+		<input type="hidden" name="sorting" value="${sorting}">
+		<input type="button" onClick="location.href='/listProduct.do?sorting=high'" value="가격높은순&Delta;">
+		</c:if>
+		<c:if test="${sorting=='high'}">
+		<input type="hidden" name="sorting" value="${sorting}">
+		<input type="button" onClick="location.href='/listProduct.do?sorting=low'" value="가격낮은순&nabla;">
+		</c:if> 
+		</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="150">등록일</td>
+		<td class="ct_list_b" width="150">
+		<c:if test="${daysorting=='lowDay'}">
+		<input type="hidden" name="daysorting" value="${daysorting}">
+		<input type="button" onClick="location.href='/listProduct.do?daysorting=highDay'" value="신상품등록&Delta;">
+				</c:if>
+		<c:if test="${daysorting=='highDay'}">
+		<input type="hidden" name="daysorting" value="${daysorting}">
+		<input type="button" onClick="location.href='/listProduct.do?daysorting=lowDay'" value="신상품&nabla;">
+		</c:if>
+		</td> 
 		<td class="ct_line02"></td>
 		<td class="ct_list_b" width="150">현재상태</td>
 		
@@ -137,7 +157,13 @@
 		<td align="center">${i}</td>
 		<td></td>
 		<td align="center">
-		<img src = "/images/uploadFiles/${product.fileName}" width = "150"></td>
+		<c:if test="${!empty product.fileName}">
+		<img src = "/images/uploadFiles/${product.fileName}" width = "150">
+		</c:if>
+		<c:if test="${empty product.fileName}">
+		<img src = "/images/uploadFiles/notimage.gif" width = "150">
+		</c:if>
+		</td>
 		<td></td>
 		<td align="center">
 		<a href="/getProduct.do?prodNo=${product.prodNo}&menu=${param.menu}&tranCode=${product.proTranCode}">${product.prodName}</a>

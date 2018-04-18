@@ -114,7 +114,12 @@ body{
 								</td>
 								<td></td>
 								<td align="center">
-								<img src = "/images/uploadFiles/${vo.purchaseProd.fileName}" width = "150"></td>
+								<c:if test="${!empty vo.purchaseProd.fileName}">
+								<img src = "/images/uploadFiles/${vo.purchaseProd.fileName}" width = "150">
+								</c:if>
+								<c:if test="${empty vo.purchaseProd.fileName}">
+								<img src = "/images/uploadFiles/notimage.gif" width = "150">
+								</c:if>
 								<td></td>
 								
 								<td class="ct_list_test1" align="left">

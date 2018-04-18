@@ -30,7 +30,34 @@ public class ListProductAction extends Action {
 			System.out.println("currentPage : "+currentPage); // currentPage 가 나와줘야한다. 2누르면 2
 		}
 		
+		///상품가격 순서를 위한 로직
+		String sorting = "low";
+		System.out.println("sorting를 위한 parameter!!!!!!!!!!!!!!!!!+++++++:::::"+sorting);
 		
+		if(request.getParameter("sorting")!=null && request.getParameter("sorting").equals("high")) {
+			search.setSorting(request.getParameter("sorting"));
+			sorting = request.getParameter("sorting");
+		}else {
+			search.setSorting(sorting);
+		}
+		
+		request.setAttribute("sorting", sorting);
+		///
+		
+		
+		///상품 등록날짜 순서를 위한 로직
+		String daysorting = "highDay";
+		System.out.println("Daysorting를 위한 parameter!!!!!!!!!!!!!!!!!+++++++:::::"+daysorting);
+		
+		if(request.getParameter("daysorting")!=null && request.getParameter("daysorting").equals("highDay")) {
+			search.setDaySorting(request.getParameter("daysorting"));
+			daysorting = request.getParameter("daysorting");
+		}else {
+			search.setDaySorting(daysorting);
+		}
+		
+		request.setAttribute("daysorting", daysorting);
+		///
 		
 		search.setCurrentPage(currentPage);
 		search.setSearchCondition(request.getParameter("searchCondition"));

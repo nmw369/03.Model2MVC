@@ -77,7 +77,14 @@
 	<tr>
 		<td width="104" class="ct_write">상품이미지</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td><img src="/images/uploadFiles/${vo.fileName}" width="300"></td>
+		<td>
+		<c:if test="${!empty vo.fileName}">
+		<img src="/images/uploadFiles/${vo.fileName}" width="300">
+		</c:if>
+		<c:if test="${empty vo.fileName}">
+		<img src = "/images/uploadFiles/notimage.gif" width = "150">
+		</c:if>
+		</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
