@@ -67,6 +67,7 @@ public class ListPurchaseAction extends Action{
 		request.setAttribute("list", map.get("list"));
 		request.setAttribute("Search", search);
 		
+		System.out.println("+++++++++++++ "+map.get("list")+" ----------------");
 		//Purchase pur = (Purchase)map.get("list");
 		//list 정보조회를 위한 Product 정보
 				

@@ -41,7 +41,8 @@
 		<link rel="stylesheet" href="/css/admin.css" type="text/css">
 		
 		<script type="text/javascript">
-			function fncGetList() {
+			function fncGetList(currentPage) {
+				document.getElementById("currentPage").value = currentPage;
 				document.detailForm.submit();
 			}
 		</script>
@@ -98,14 +99,7 @@ body{
 				<td class="ct_list_b">배송현황</td>
 				
 			</tr>
-							<%-- <%
-								int no = total - ( ( searchVO.getCurrentPage() - 1 ) * searchVO.getPageSize() ) ;
-								for (int i = 0; i < list.size(); i++) {
-									Purchase vo = (Purchase) list.get(i);
-									int tranCode = Integer.parseInt(vo.getTranCode().trim());
-									System.out.println("qqqqqqqqqqqqqqqqqqqqq::listPurJSP::"+vo.getPurchaseProd().getProdNo());
-									Product vo2 = new ProductDAO().findProduct(vo.getPurchaseProd().getProdNo());
-							%> --%>
+							
 							<c:set var="a" value="0"/>
 							
 							<c:forEach var="vo" items="${list}">
@@ -116,6 +110,7 @@ body{
 									<a href="/getPurchase.do?tranNo=${vo.tranNo}">
 										${a}
 									</a>
+									
 								</td>
 								<td></td>
 								<td align="center">
@@ -174,7 +169,7 @@ body{
 			<tr>
 				<td align="center">
 			
-					<input type="hidden" id="currentPage" name="currentPage" value=""/>
+					<input type="hidden" id="currentPage" name="currentPage" value="${resultPage.currentPage}"/>
 				 
 				 <jsp:include page="../common/pageNavigator.jsp"/>
 				 

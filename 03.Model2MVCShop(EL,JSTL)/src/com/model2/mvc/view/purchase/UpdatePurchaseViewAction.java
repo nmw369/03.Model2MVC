@@ -13,9 +13,15 @@ public class UpdatePurchaseViewAction extends Action{
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
+		System.out.println("=================================update실행===================================");
+		System.out.println("upPurchase확인:::::::"+request.getParameter("tranNo"));
+		Purchase purchase = new PurchaseSerivceDAO().findPurchase(Integer.parseInt(request.getParameter("tranNo").trim()));
 		
-		Purchase purchase = new PurchaseSerivceDAO().findPurchase(Integer.parseInt(request.getParameter("tranNo")));
 		
+		
+		System.out.println("값넣은거 확인!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+purchase);
+		
+				
 		String str = purchase.getDivyDate().substring(0,purchase.getDivyDate().indexOf(" "));
 		String temp = str.replaceAll("-", "");
 		
@@ -23,7 +29,7 @@ public class UpdatePurchaseViewAction extends Action{
 		
 		purchase.setDivyDate(temp);
 		
-		request.setAttribute("purVO", purchase);	
+		request.setAttribute("purchaseVO", purchase);	
 		
 		System.out.println("=================================update실행완료===================================");
 		

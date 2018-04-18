@@ -120,10 +120,10 @@ public class PurchaseSerivceDAO {
 				
 		List<Purchase> list = new ArrayList<Purchase>();
 		
-		List<Product> proVo = new ArrayList<Product>();
+		//List<Product> proVo = new ArrayList<Product>();
 		
-		while(rs.next())
-			for (int i = 0; i < search.getPageSize(); i++) {
+		while(rs.next()) {
+			
 				Purchase vo = new Purchase();
 				vo.setBuyer(new UserDao().findUser(rs.getString(1)));
 				vo.setReceiverName(rs.getString(2));
@@ -134,25 +134,27 @@ public class PurchaseSerivceDAO {
 				
 				list.add(vo);
 				
-				/*Product vo2 = new Product();
-				String sql2 = "Select*from product where prod_no=?";
-				PreparedStatement stmt2 = con.prepareStatement(sql2);
-				stmt2.setInt(1,rs.getInt(6));
-				ResultSet rs2 = stmt2.executeQuery();
-				while(rs.next()) {
-					vo2.setProdNo(rs2.getInt(1));
-					vo2.setProdName(rs2.getString(2));
-					vo2.setProdDetail(rs2.getString(3));
-					vo2.setManuDate(rs2.getString(4));
-					vo2.setPrice(rs2.getInt(5));
-					vo2.setFileName(rs2.getString(6));
-					vo2.setRegDate(rs2.getDate(7));
-					
-					proVo.add(vo2);
-				}
-				map.put("vo2",vo2);
-				System.out.println(vo2);*/
+				
 			}
+		
+		/*Product vo2 = new Product();
+		String sql2 = "Select*from product where prod_no=?";
+		PreparedStatement stmt2 = con.prepareStatement(sql2);
+		stmt2.setInt(1,rs.getInt(6));
+		ResultSet rs2 = stmt2.executeQuery();
+		while(rs.next()) {
+			vo2.setProdNo(rs2.getInt(1));
+			vo2.setProdName(rs2.getString(2));
+			vo2.setProdDetail(rs2.getString(3));
+			vo2.setManuDate(rs2.getString(4));
+			vo2.setPrice(rs2.getInt(5));
+			vo2.setFileName(rs2.getString(6));
+			vo2.setRegDate(rs2.getDate(7));
+			
+			proVo.add(vo2);
+		}
+		map.put("vo2",vo2);
+		System.out.println(vo2);*/
 		
 		System.out.println("list.size() : "+ list.size());
 		//list °ª Àü¼Û
