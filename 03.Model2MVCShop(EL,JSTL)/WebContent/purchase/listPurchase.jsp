@@ -100,17 +100,19 @@ body{
 				
 			</tr>
 							
-							<c:set var="a" value="0"/>
-							
+							<c:set var="i" value="${currentPage}"></c:set>
+							<c:set var="j" value="${pageSize}"></c:set>
+							<c:set var="k" value="2"></c:set>
 							<c:forEach var="vo" items="${list}">
-								<c:set var="a" value="${a+1}"/>
+								<c:set var="i" value="${i*j-k}"></c:set>
 							<tr class="ct_list_pop" bgcolor="#ffffff">
 								
 								<td class="ct_list_test1" align="center">
 									<a href="/getPurchase.do?tranNo=${vo.tranNo}">
-										${a}
+										${i}
 									</a>
-									
+									<c:set var="k" value="${k-1}"></c:set>
+									<c:set var="i" value="${currentPage}"></c:set>
 								</td>
 								<td></td>
 								<td align="center">

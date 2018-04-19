@@ -67,6 +67,11 @@ public class ListPurchaseAction extends Action{
 		request.setAttribute("list", map.get("list"));
 		request.setAttribute("Search", search);
 		
+		
+		//상품번호를위한 것
+		request.setAttribute("currentPage", currentPage);
+		request.setAttribute("pageSize", pageSize);
+		
 		System.out.println("+++++++++++++ "+map.get("list")+" ----------------");
 		//Purchase pur = (Purchase)map.get("list");
 		//list 정보조회를 위한 Product 정보

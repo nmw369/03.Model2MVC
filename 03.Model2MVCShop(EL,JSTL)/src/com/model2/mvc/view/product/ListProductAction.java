@@ -30,6 +30,8 @@ public class ListProductAction extends Action {
 			System.out.println("currentPage : "+currentPage); // currentPage 가 나와줘야한다. 2누르면 2
 		}
 		
+		
+		
 		///상품가격 순서를 위한 로직
 		String sorting = "low";
 		System.out.println("sorting를 위한 parameter!!!!!!!!!!!!!!!!!+++++++:::::"+sorting);
@@ -46,13 +48,14 @@ public class ListProductAction extends Action {
 		
 		
 		///상품 등록날짜 순서를 위한 로직
-		String daysorting = "highDay";
+		String daysorting = "";
 		System.out.println("Daysorting를 위한 parameter!!!!!!!!!!!!!!!!!+++++++:::::"+daysorting);
 		
 		if(request.getParameter("daysorting")!=null && request.getParameter("daysorting").equals("highDay")) {
 			search.setDaySorting(request.getParameter("daysorting"));
 			daysorting = request.getParameter("daysorting");
 		}else {
+			daysorting = request.getParameter("daysorting");
 			search.setDaySorting(daysorting);
 		}
 		
@@ -80,14 +83,24 @@ public class ListProductAction extends Action {
 		request.setAttribute("list", map.get("list"));
 		request.setAttribute("resultPage", resultPage);
 		request.setAttribute("search", search);
+		request.setAttribute("total", map.get("totalCount"));
 		
+		//상품번호를위한 것
+		request.setAttribute("currentPage", currentPage);
+		request.setAttribute("pageSize", pageSize);
+		System.out.println(currentPage+":"+pageSize+":::::rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr현재 페이지:PageSize");
+		
+					
 		///user와 admin 계정 접속시 보여주는 화면 다르게 하기위해 분리
 		HttpSession session = request.getSession(false);
 		
 		User user = (User) session.getAttribute("user");
 		
-		String role = user.getRole();
+		String role = "user";
 		
+		if(user!=null) {
+		role = user.getRole();
+		}
 		//System.out.println("======================접속아이디체크==============================="+role);
 		/*String uri = "";
 		if(role.equals("admin")) {

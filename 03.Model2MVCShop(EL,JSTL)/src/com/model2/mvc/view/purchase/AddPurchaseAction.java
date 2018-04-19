@@ -45,6 +45,7 @@ public class AddPurchaseAction extends Action{
 		
 		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@addpurchase에서 받은값::"+purchase);
 		
+		
 		return "forward:/purchase/addPurchase.jsp";
 	}
 	

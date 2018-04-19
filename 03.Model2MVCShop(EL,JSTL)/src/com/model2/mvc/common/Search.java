@@ -9,7 +9,7 @@ public class Search {
 	private String searchKeyword;
 	private int pageSize;
 	private String sorting;
-	private String daySorting;
+	private String daySorting="";
 	
 	
 	///Constructor

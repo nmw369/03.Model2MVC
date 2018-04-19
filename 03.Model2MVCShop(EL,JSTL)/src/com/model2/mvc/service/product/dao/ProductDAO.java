@@ -128,18 +128,33 @@ public class ProductDAO {
 			}
 		}
 		
-		if(search.getSorting().equals("high")) {
-			sql += " order by p.price desc nulls last";
-		}else{
-		sql += " order by p.price asc nulls last";
-		}
+		
+		System.out.println("=============왜안나오지???::::"+search.getDaySorting());
 		
 		
-		if(search.getDaySorting().equals("highDay")){
-			sql += " , p.reg_date desc nulls last";
-		}else{
-			sql += " , p.reg_date asc nulls last";
+		if(search.getDaySorting()!=""&&search.getDaySorting().equals("highDay")){
+			
+			search.setSorting("a");
+			sql += " order by p.reg_date desc nulls last";
+			
+			System.out.println(search.getSorting()+"!!!!!!!!!!!!!!!!!!!!!!!!!여기출력");
+			
+		}else if(search.getDaySorting()!=""&&search.getDaySorting().equals("lowDay")){
+			
+			search.setSorting("a");
+			sql += " order by p.reg_date asc nulls last";
+		}else if(search.getSorting()!="a"){		
+		
+			if(search.getSorting().equals("high")) {
+				sql += " order by p.price desc nulls last";
+			}else if(search.getSorting().equals("low")){
+				sql += " order by p.price asc nulls last";
+			}
 		}
+		
+		System.out.println(search.getDaySorting()+"ccccccccccccccccc"+search.getSorting()+"!!!!!!!!!!소팅한값");
+		
+		
 		
 		
 		System.out.println("ProductDAO::Original SQL :: " + sql);
@@ -175,6 +190,9 @@ public class ProductDAO {
 		
 		//==> totalCount 정보 저장
 		map.put("totalCount", new Integer(totalCount));
+		
+		System.out.println(map.get("totalCount"));
+		
 		//==> currentPage 의 게시물 정보 갖는 List 저장
 		map.put("list", list);
 		
@@ -258,5 +276,59 @@ public class ProductDAO {
 			System.out.println("=====makeCurrentPage method end....=====");
 			
 			return sql;
+		}
+		
+		public Map<String,Object> mainlist() throws Exception{
+			
+			System.out.println("/////main method start/////");
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			
+			Connection con = DBUtil.getConnection();
+			
+			
+			String sql = "select * from product";
+			
+			sql += " order by price desc nulls last";
+			
+					
+			System.out.println("ProductDAO::Original SQL :: " + sql);
+			
+			/*int totalCount = this.getTotalCount(sql);
+			System.out.println("ProductDAO :: totalCount :: "+totalCount);*/
+			
+			//==> CurrentPage 게시물만 받도록 Query 다시구성
+			
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			ResultSet rs = pStmt.executeQuery();
+			
+			List<Product> list = new ArrayList<Product>();
+			
+			while(rs.next()){
+				Product product = new Product();
+				product.setProdNo(rs.getInt(1));
+				product.setProdName(rs.getString(2));
+				product.setProdDetail(rs.getString(3));
+				product.setManuDate(rs.getString(4));
+				product.setPrice(rs.getInt(5));
+				product.setFileName(rs.getString(6));
+				product.setRegDate(rs.getDate(7));
+				
+				list.add(product);
+			}
+			
+			//==> totalCount 정보 저장
+//			map.put("totalCount", new Integer(totalCount));
+			//==> currentPage 의 게시물 정보 갖는 List 저장
+			map.put("list", list);
+			
+			rs.close();
+			pStmt.close();
+			con.close();
+			
+			System.out.println("/////getProductList method end..../////");
+			
+			return map;
+			
 		}
 }

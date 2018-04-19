@@ -132,13 +132,13 @@
 		</td>
 		<td class="ct_line02"></td>
 		<td class="ct_list_b" width="150">
-		<c:if test="${daysorting=='lowDay'}">
+		<c:if test="${daysorting==''||daysorting=='lowDay'}">
 		<input type="hidden" name="daysorting" value="${daysorting}">
-		<input type="button" onClick="location.href='/listProduct.do?daysorting=highDay'" value="신상품등록&Delta;">
+		<input type="button" onClick="location.href='/listProduct.do?daysorting=highDay'" value="최신순&Delta;">
 				</c:if>
 		<c:if test="${daysorting=='highDay'}">
 		<input type="hidden" name="daysorting" value="${daysorting}">
-		<input type="button" onClick="location.href='/listProduct.do?daysorting=lowDay'" value="신상품&nabla;">
+		<input type="button" onClick="location.href='/listProduct.do?daysorting=lowDay'" value="오래된순&nabla;">
 		</c:if>
 		</td> 
 		<td class="ct_line02"></td>
@@ -149,12 +149,20 @@
 		<td colspan="11" bgcolor="808285" height="1"></td>
 	</tr>
 	
-	<c:set var="i" value="0"></c:set>
+	
+	
+		
+	<c:set var="i" value="${currentPage}"></c:set>
+	<c:set var="j" value="${pageSize}"></c:set>
+	<c:set var="k" value="2"></c:set>
 	<c:forEach var="product" items="${list}">
-		<c:set var="i" value="${i+1}"></c:set>
+		<c:set var="i" value="${i*j-k}"></c:set>
+		
 		
 	<tr class="ct_list_pop" bgcolor="#ffffff">
 		<td align="center">${i}</td>
+		<c:set var="k" value="${k-1}"></c:set>
+		<c:set var="i" value="${currentPage}"></c:set>
 		<td></td>
 		<td align="center">
 		<c:if test="${!empty product.fileName}">

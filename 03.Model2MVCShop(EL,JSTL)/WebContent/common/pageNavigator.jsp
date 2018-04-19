@@ -6,7 +6,7 @@
 			 이전
 	</c:if>
 	<c:if test="${ resultPage.currentPage > resultPage.pageUnit }">
-	<a href="javascript:fncGetList('${ resultPage.currentPage-1}')"> 이전</a>
+	<a href="javascript:fncGetList('${ resultPage.currentPage-1}')">◁이전</a>
 			
 	</c:if>
 	
@@ -20,5 +20,5 @@
 			이후 
 	</c:if>
 	<c:if test="${ resultPage.endUnitPage < resultPage.maxPage }">
-			<a href="javascript:fncGetList('${resultPage.endUnitPage+1}')">이후 </a>
+			<a href="javascript:fncGetList('${resultPage.endUnitPage+1}')">이후▷</a>
 	</c:if>
