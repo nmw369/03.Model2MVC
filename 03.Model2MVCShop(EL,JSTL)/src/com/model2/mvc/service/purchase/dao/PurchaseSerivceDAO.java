@@ -25,7 +25,7 @@ public class PurchaseSerivceDAO {
 	
 	public void insertPurchase(Purchase purchase) throws Exception{
 				
-		String sql = "insert into transaction values(seq_transaction_tran_no.nextval,?,?,?,?,?,?,?,?,sysdate,to_date(?,'YYYY-MM-DD'))";
+		String sql = "insert into transaction values(seq_transaction_tran_no.nextval,?,?,?,?,?,?,?,?,sysdate,to_date(?,'YYYY-MM-DD'),?)";
 		Connection con = DBUtil.getConnection();
 		PreparedStatement stmt = con.prepareStatement(sql);
 		
@@ -39,6 +39,7 @@ public class PurchaseSerivceDAO {
 		stmt.setString(7, purchase.getDivyRequest());
 		stmt.setString(8, purchase.getTranCode());
 		stmt.setString(9, purchase.getDivyDate());
+		stmt.setInt(10, purchase.getsEA());
 		stmt.executeUpdate();
 		
 		stmt.close();
@@ -68,6 +69,7 @@ public class PurchaseSerivceDAO {
 			vo.setTranCode(rs.getString(9));
 			vo.setOrderDate(rs.getDate(10));
 			vo.setDivyDate(rs.getString(11));
+			vo.setsEA(rs.getInt(12));
 			System.out.println(rs.getString(11)+"====================================!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");	
 			
 //		vo.setPurchaseProd(new ProductDAO().findProduct(rs.getInt("prod_no")));
@@ -92,7 +94,7 @@ public class PurchaseSerivceDAO {
 	} 
 	public HashMap<String, Object> getPurchaseList(Search search,String userId) throws Exception {
 		
-		String sql = "select buyer_id ,receiver_name,receiver_phone,tran_status_code,tran_no,prod_no from transaction where BUyer_id='"+userId+"'";
+		String sql = "select buyer_id ,receiver_name,receiver_phone,tran_status_code,tran_no,prod_no,sea from transaction where BUyer_id='"+userId+"'";
 		Connection con = DBUtil.getConnection();
 		
 		System.out.println(sql+"::::::=====0");
@@ -131,6 +133,7 @@ public class PurchaseSerivceDAO {
 				vo.setTranCode(rs.getString(4));
 				vo.setTranNo(rs.getInt(5));
 				vo.setPurchaseProd(new ProductDAO().findProduct(rs.getInt(6)));
+				vo.setsEA(rs.getInt(7));
 				
 				list.add(vo);
 				
@@ -184,7 +187,7 @@ public class PurchaseSerivceDAO {
 	
 	public void updatePurchase(Purchase purchase)throws Exception {
 		
-		String sql ="update transaction set payment_option=? , receiver_name=?, receiver_phone=? ,demailaddr=?,dlvy_request=?,dlvy_date=? " + 
+		String sql ="update transaction set payment_option=? , receiver_name=?, receiver_phone=? ,demailaddr=?,dlvy_request=?,dlvy_date=?,sea=? " + 
 				" where tran_no =?";
 		Connection con = DBUtil.getConnection();
 		PreparedStatement stmt = con.prepareStatement(sql);
@@ -196,6 +199,7 @@ public class PurchaseSerivceDAO {
 		stmt.setString(5, purchase.getDivyRequest());
 		stmt.setString(6, purchase.getDivyDate());
 		stmt.setInt(7, purchase.getTranNo());
+		stmt.setInt(8, purchase.getsEA());
 		
 		stmt.executeUpdate();
 		

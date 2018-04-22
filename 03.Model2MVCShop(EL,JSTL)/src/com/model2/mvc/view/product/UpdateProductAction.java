@@ -28,6 +28,7 @@ public class UpdateProductAction extends Action {
 		product.setManuDate(request.getParameter("manuDate"));
 		product.setPrice(Integer.parseInt(request.getParameter("price")));
 		product.setFileName(request.getParameter("fileName"));
+		product.setnEA(Integer.parseInt(request.getParameter("nEA")));
 		
 		ProductService productService=new ProductServiceImpl(); // regData가 null 이므로 DAO를 추상화한 Service instance 생성하여 불러온다.
 		productService.updateProduct(product); // updateProduct후에 이 service instance는 사라진다.

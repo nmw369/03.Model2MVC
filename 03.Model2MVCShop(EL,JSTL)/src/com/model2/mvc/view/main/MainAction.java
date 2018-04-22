@@ -21,9 +21,24 @@ public class MainAction extends Action{
 		
 		Map<String,Object> map = new ProductDAO().mainlist();
 		request.setAttribute("list", map.get("list"));
+		//날짜별 조회수 리스트를 위한 로직
+		if(request.getParameter("manuDate")!=null) {
+		//조회수리스트 제목용 날짜
+		request.setAttribute("day", request.getParameter("manuDate"));
 		
-		/*request.setAttribute("a", "자전거");
-		request.setAttribute("b", "노트북");*/
+		String day = request.getParameter("manuDate").replaceAll("-", "");
+		//달력값 날짜
+		request.setAttribute("pday", day);
+		
+		map = new ProductDAO().lookuplist(day);
+		request.setAttribute("lookuplist", map.get("lookuplist"));
+		
+		System.out.println(day+"=====::parsing한 날짜");
+		
+		}
+		
+		System.out.println("조회수 리스트 체크:::"+request.getAttribute("lookuplist"));
+		
 		
 		System.out.println("mainAction 출력 : "+request.getAttribute("list"));
 		
@@ -32,7 +47,7 @@ public class MainAction extends Action{
 		Date today = new Date();
 	    System.out.println(today);
 	        
-	    SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
+	    SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
 	    SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss a");
 	        
 	    System.out.println("Date: "+date.format(today));
@@ -41,17 +56,36 @@ public class MainAction extends Action{
 	    
 	    new ProductDAO().daylookup(date.format(today));
 	    
-	    request.setAttribute("a", "자전거");
+	   
 		
 	    HttpSession session = request.getSession(false);
 	    User user = (User)session.getAttribute("user");
-	    
-	    if(user!=null && user.getRole()=="admin") {
-	    	return "forward:/main/mainChart.jsp";
-	    }else {
-	        
-		return "forward:/main/mainView.jsp";
+	    if(user== null) {
+	    	user = new User();
+	    	user.setRole("user");
 	    }
+	    
+	    System.out.println(user.getRole()+"::::adminCheck");
+	    //차트랑 조회수 구분
+	    String start = request.getParameter("start");
+	    
+	    System.out.println(start+":::start체크");
+	    
+	    if(start!=null && start.equals("yes")) {
+	    request.setAttribute("start", start);
+	    }else {
+	    request.setAttribute("start", start);
+	    }
+	    
+	    System.out.println(request.getAttribute("start")+":::start체크2");
+	    
+	    
+	    ///차트랑 리스트 날짜 별 조회
+	    System.out.println(request.getParameter("manuDate")+"::::날짜 체크!!!");
+	    request.setAttribute("manuDate", request.getParameter(date.format(today)));
+	    
+		return "forward:/main/mainView.jsp";
+	   
 	}
 
 }

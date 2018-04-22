@@ -19,10 +19,25 @@ public class Purchase {
 	private String receiverPhone;
 	private String tranCode;
 	private int tranNo;
+	private int sEA;
 	
 	public Purchase(){
 	}
 	
+	
+	
+	public int getsEA() {
+		return sEA;
+	}
+
+
+
+	public void setsEA(int sEA) {
+		this.sEA = sEA;
+	}
+
+
+
 	public User getBuyer() {
 		return buyer;
 	}
@@ -97,6 +112,6 @@ public class Purchase {
 				+ "\n, orderDate=" + orderDate + ", paymentOption=" + paymentOption 
 				+ "\n, purchaseProd=" + purchaseProd + ", receiverName=" + receiverName 
 				+ "\n, receiverPhone=" + receiverPhone + ", tranCode=" + tranCode 
-				+ "\n, tranNo=" + tranNo + "]";
+				+ "\n, tranNo=" + tranNo +"::"+sEA+"]";
 	}
 }

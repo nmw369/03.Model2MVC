@@ -39,7 +39,7 @@
 			<tr>
 				<td>구매방법</td>
 				<td>
-				${purchase.paymentOption=='1'?현금구매:신용구매}
+				${purchase.paymentOption=='1'?"현금구매":"신용구매"}
 				</td>
 				<td></td>
 			</tr>
@@ -51,6 +51,11 @@
 			<tr>
 				<td>구매자연락처</td>
 				<td>${purchase.receiverPhone}</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>구매수량</td>
+				<td>${purchase.sEA}</td>
 				<td></td>
 			</tr>
 			<tr>

@@ -34,6 +34,7 @@ public class AddPurchaseAction extends Action{
 		purchase.setDivyRequest(request.getParameter("receiverRequest"));
 		purchase.setDivyDate(request.getParameter("receiverDate"));
 		purchase.setTranCode("2");
+		purchase.setsEA(Integer.parseInt(request.getParameter("sEA").trim()));
 		System.out.println(purchase+"////////////////////PurAction 값 저장 완료됨");
 		
 		PurchaseService service=new PurchaseServiceImpl();

@@ -26,7 +26,7 @@ public class ProductDAO {
 		
 		Connection con = DBUtil.getConnection();
 		
-		String sql = "INSERT INTO product VALUES (seq_product_prod_no.nextval,?,?,?,?,?,SYSDATE,'1',?)";
+		String sql = "INSERT INTO product VALUES (seq_product_prod_no.nextval,?,?,?,?,?,SYSDATE,'1',?,?,?)";
 		
 		Date today = new Date();
 		SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
@@ -39,7 +39,8 @@ public class ProductDAO {
 		pStmt.setInt(4, product.getPrice());
 		pStmt.setString(5, product.getFileName());
 		pStmt.setString(6, date.format(today));
-		
+		pStmt.setInt(7, product.getTotalEA());
+		pStmt.setInt(8, product.getTotalEA());
 		pStmt.executeUpdate();
 		
 		pStmt.close();
@@ -56,7 +57,7 @@ public class ProductDAO {
 
 		//String sql = "SELECT * FROM product WHERE prod_no=?";
 		
-		String sql ="select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date, nvl(t.tran_status_code,1)"
+		String sql ="select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date,p.now_count, nvl(t.tran_status_code,1)"
 				+ " from transaction t, product p"
 				+ " where t.prod_no(+)=p.prod_no and p.prod_no=?";
 		
@@ -76,7 +77,8 @@ public class ProductDAO {
 			product.setPrice(rs.getInt(5));
 			product.setFileName(rs.getString(6));
 			product.setRegDate(rs.getDate(7));
-			product.setProTranCode(rs.getString(8).trim());
+			product.setnEA(rs.getInt(8));
+			product.setProTranCode(rs.getString(9).trim());
 		}
 		
 		System.out.println("product.getProdNo() : "+product.getProdNo());
@@ -111,7 +113,7 @@ public class ProductDAO {
 		
 		sql += " ORDER BY prod_no";*/
 		
-		String sql = "select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date,p.lookup,nvl(t.tran_status_code,1)"
+		String sql = "select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date,p.lookup,p.now_count,nvl(t.tran_status_code,1)"
 				+ " from transaction t, product p"
 				+ " where t.prod_no(+)=p.prod_no";
 		
@@ -193,7 +195,8 @@ public class ProductDAO {
 			product.setFileName(rs.getString(6));
 			product.setRegDate(rs.getDate(7));
 			product.setLookup(rs.getInt(8));
-			product.setProTranCode(rs.getString(9).trim());
+			product.setnEA(rs.getInt(9));
+			product.setProTranCode(rs.getString(10).trim());
 			list.add(product);
 		}
 		
@@ -323,6 +326,7 @@ public class ProductDAO {
 				product.setFileName(rs.getString(6));
 				product.setRegDate(rs.getDate(7));
 				product.setLookup(rs.getInt(8));
+				product.setnEA(rs.getInt(10));
 				
 				list.add(product);
 			}
@@ -371,8 +375,13 @@ public class ProductDAO {
 			Date today = new Date();
 			SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
 			
+			
+			String temp = date.format(today);
+			
+			System.out.println(temp+":::::daylooup check++++++");
 			while(rs.next()) {
-				if(rs.getString(1)!=date.format(today)) {
+				if(!rs.getString(1).equals(temp)) {
+					System.out.println(rs.getString(1)+":::::::rsday check--------");
 					String sql2="insert into lookup values(?,?,?)";
 					stmt = con.prepareStatement(sql2);
 					
@@ -387,6 +396,8 @@ public class ProductDAO {
 					stmt.setString(1, date.format(today));
 					stmt.setString(2, rs.getString(2));
 					stmt.executeQuery();
+				}else{
+					
 				}
 			}
 			
@@ -394,6 +405,57 @@ public class ProductDAO {
 			stmt.close();
 			rs.close();
 			
+			
+		}
+		
+		public Map<String,Object> lookuplist(String day) throws Exception{
+			
+			System.out.println("/////main method start/////");
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			
+			Connection con = DBUtil.getConnection();
+			
+			
+			String sql = "select * from lookup where lookup_date=?";
+			
+			sql += " order by lookup desc nulls last";
+			
+					
+			System.out.println("ProductDAO::Original SQL :: " + sql);
+			
+			/*int totalCount = this.getTotalCount(sql);
+			System.out.println("ProductDAO :: totalCount :: "+totalCount);*/
+			
+			//==> CurrentPage 게시물만 받도록 Query 다시구성
+			
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			pStmt.setString(1, day);
+			ResultSet rs = pStmt.executeQuery();
+			
+			List<Product> lookuplist = new ArrayList<Product>();
+			
+			while(rs.next()){
+				Product product = new Product();
+				product.setManuDate(rs.getString(1));
+				product.setProdName(rs.getString(2));
+				product.setLookup(rs.getInt(3));
+				
+				lookuplist.add(product);
+			}
+			
+			//==> totalCount 정보 저장
+//			map.put("totalCount", new Integer(totalCount));
+			//==> currentPage 의 게시물 정보 갖는 List 저장
+			map.put("lookuplist", lookuplist);
+			
+			rs.close();
+			pStmt.close();
+			con.close();
+			
+			System.out.println("/////getlookuplist method end..../////");
+			
+			return map;
 			
 		}
 }

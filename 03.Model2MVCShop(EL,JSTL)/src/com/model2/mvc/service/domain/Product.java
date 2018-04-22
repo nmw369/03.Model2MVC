@@ -14,11 +14,101 @@ public class Product {
 	private Date regDate;
 	private int lookup;
 	private String proTranCode;
+	private int nEA;
+	private int sEA;
+	private int totalEA;
+	
 	
 	public Product(){
 	}
 	
 	
+	
+
+
+	
+
+
+
+
+	public int getnEA() {
+		return nEA;
+	}
+
+
+
+
+
+
+
+
+
+
+	public void setnEA(int nEA) {
+		this.nEA = nEA;
+	}
+
+
+
+
+
+
+
+
+
+
+	public int getsEA() {
+		return sEA;
+	}
+
+
+
+
+
+
+
+
+
+
+	public void setsEA(int sEA) {
+		this.sEA = sEA;
+	}
+
+
+
+
+
+
+
+
+
+
+	public int getTotalEA() {
+		return totalEA;
+	}
+
+
+
+
+
+
+
+
+
+
+	public void setTotalEA(int totalEA) {
+		this.totalEA = totalEA;
+	}
+
+
+
+
+
+
+
+
+
+
 	public int getLookup() {
 		return lookup;
 	}

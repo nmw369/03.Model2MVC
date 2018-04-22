@@ -94,6 +94,8 @@ body{
 				<td class="ct_line02"></td>
 				<td class="ct_list_b" width="150">상품가격</td>
 				<td class="ct_line02"></td>
+				<td class="ct_list_b" width="150">구매수량</td>
+				<td class="ct_line02"></td>
 				<td class="ct_list_b">구매정보확인/수정</td>
 				<td class="ct_line02"></td>
 				<td class="ct_list_b">배송현황</td>
@@ -132,6 +134,9 @@ body{
 								<td></td>
 								
 								<td class="ct_list_test1" align="left">${vo.purchaseProd.price}</td>
+								<td></td>
+								
+								<td class="ct_list_test1" align="left">${vo.sEA}</td>
 								<td></td>
 								
 								<td class="ct_list_test1" align="left">

@@ -140,7 +140,9 @@
 		<input type="hidden" name="daysorting" value="${daysorting}">
 		<input type="button" onClick="location.href='/listProduct.do?daysorting=lowDay'" value="오래된순&nabla;">
 		</c:if>
-		</td> 
+		</td>
+		<td class="ct_line02"></td>
+		<td class="ct_list_b" width="150">상품수량</td> 
 		<td class="ct_line02"></td>
 		<td class="ct_list_b" width="150">현재상태</td>
 		
@@ -174,7 +176,7 @@
 		</td>
 		<td></td>
 		<td align="center">
-		<c:if test="${user.role=='user' }">
+		<c:if test="${user.role=='user' || empty user.role }">
 		<a href="/getProduct.do?prodNo=${product.prodNo}&menu=${param.menu}&tranCode=${product.proTranCode}&lookup=yes">${product.prodName}</a>
 		</c:if>
 		<c:if test="${user.role=='admin' }">
@@ -185,7 +187,8 @@
 		<td align="center">${product.price}</td>
 		<td></td>
 		<td align="center">${product.regDate}</td>
-	
+		<td></td>
+		<td align="center">${product.nEA}</td>
 		<td align="center">
 					
 				<c:if test="${product.proTranCode == '1' }">

@@ -23,6 +23,7 @@ public class AddProductAction extends Action {
 		product.setManuDate(request.getParameter("manuDate"));
 		product.setPrice(Integer.parseInt(request.getParameter("price")));
 		product.setFileName(request.getParameter("fileName"));
+		product.setTotalEA(Integer.parseInt(request.getParameter("totalEA")));
 		
 		System.out.println("product : "+product);
 		
