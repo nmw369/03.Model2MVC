@@ -12,11 +12,23 @@ public class Product {
 	private String prodName;
 	private int prodNo;
 	private Date regDate;
+	private int lookup;
 	private String proTranCode;
 	
 	public Product(){
 	}
 	
+	
+	public int getLookup() {
+		return lookup;
+	}
+
+
+	public void setLookup(int lookup) {
+		this.lookup = lookup;
+	}
+
+
 	public String getProTranCode() {
 		return proTranCode;
 	}

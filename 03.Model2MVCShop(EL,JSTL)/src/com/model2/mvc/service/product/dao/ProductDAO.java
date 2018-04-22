@@ -3,7 +3,9 @@ package com.model2.mvc.service.product.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -24,7 +26,11 @@ public class ProductDAO {
 		
 		Connection con = DBUtil.getConnection();
 		
-		String sql = "INSERT INTO product VALUES (seq_product_prod_no.nextval,?,?,?,?,?,SYSDATE)";
+		String sql = "INSERT INTO product VALUES (seq_product_prod_no.nextval,?,?,?,?,?,SYSDATE,'1',?)";
+		
+		Date today = new Date();
+		SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+		
 		
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setString(1, product.getProdName());
@@ -32,6 +38,7 @@ public class ProductDAO {
 		pStmt.setString(3, product.getManuDate().replaceAll("-", ""));
 		pStmt.setInt(4, product.getPrice());
 		pStmt.setString(5, product.getFileName());
+		pStmt.setString(6, date.format(today));
 		
 		pStmt.executeUpdate();
 		
@@ -104,7 +111,7 @@ public class ProductDAO {
 		
 		sql += " ORDER BY prod_no";*/
 		
-		String sql = "select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date, nvl(t.tran_status_code,1)"
+		String sql = "select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date,p.lookup,nvl(t.tran_status_code,1)"
 				+ " from transaction t, product p"
 				+ " where t.prod_no(+)=p.prod_no";
 		
@@ -132,16 +139,17 @@ public class ProductDAO {
 		System.out.println("=============왜안나오지???::::"+search.getDaySorting());
 		
 		
-		if(search.getDaySorting()!=""&&search.getDaySorting().equals("highDay")){
+		if(search.getDaySorting()!=null&&search.getDaySorting().equals("highDay")){
 			
 			search.setSorting("a");
 			sql += " order by p.reg_date desc nulls last";
 			
 			System.out.println(search.getSorting()+"!!!!!!!!!!!!!!!!!!!!!!!!!여기출력");
 			
-		}else if(search.getDaySorting()!=""&&search.getDaySorting().equals("lowDay")){
+		}else if(search.getDaySorting()!=null&&search.getDaySorting().equals("lowDay")){
 			
 			search.setSorting("a");
+			System.out.println(search.getSorting()+"++++++소팅값확인+++++++");
 			sql += " order by p.reg_date asc nulls last";
 		}else if(search.getSorting()!="a"){		
 		
@@ -184,7 +192,8 @@ public class ProductDAO {
 			product.setPrice(rs.getInt(5));
 			product.setFileName(rs.getString(6));
 			product.setRegDate(rs.getDate(7));
-			product.setProTranCode(rs.getString(8).trim());
+			product.setLookup(rs.getInt(8));
+			product.setProTranCode(rs.getString(9).trim());
 			list.add(product);
 		}
 		
@@ -289,7 +298,7 @@ public class ProductDAO {
 			
 			String sql = "select * from product";
 			
-			sql += " order by price desc nulls last";
+			sql += " order by lookup desc nulls last";
 			
 					
 			System.out.println("ProductDAO::Original SQL :: " + sql);
@@ -313,6 +322,7 @@ public class ProductDAO {
 				product.setPrice(rs.getInt(5));
 				product.setFileName(rs.getString(6));
 				product.setRegDate(rs.getDate(7));
+				product.setLookup(rs.getInt(8));
 				
 				list.add(product);
 			}
@@ -329,6 +339,61 @@ public class ProductDAO {
 			System.out.println("/////getProductList method end..../////");
 			
 			return map;
+			
+		}
+		public void updatelookup(int prodNo) throws Exception{
+			
+			Connection con = DBUtil.getConnection();
+			
+			Date today = new Date();
+			SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+			
+			String sql="update product set lookup = lookup+1 , today=? where prod_no=?";
+						
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, date.format(today));
+			stmt.setInt(2, prodNo);
+			ResultSet rs = stmt.executeQuery();
+			
+			System.out.println("조회수 증가 완료됨!!!!!!");
+			con.close();
+			stmt.close();
+			rs.close();
+			
+		}
+		
+		public void daylookup(String day) throws Exception{
+			Connection con = DBUtil.getConnection();
+			String sql="select today,prod_name,lookup from product";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			
+			Date today = new Date();
+			SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+			
+			while(rs.next()) {
+				if(rs.getString(1)!=date.format(today)) {
+					String sql2="insert into lookup values(?,?,?)";
+					stmt = con.prepareStatement(sql2);
+					
+					stmt.setString(1, rs.getString(1));
+					stmt.setString(2, rs.getString(2));
+					stmt.setInt(3, rs.getInt(3));
+					
+					stmt.executeQuery();
+					
+					String sql3="update product set today=? where prod_name=?";
+					stmt = con.prepareStatement(sql3);
+					stmt.setString(1, date.format(today));
+					stmt.setString(2, rs.getString(2));
+					stmt.executeQuery();
+				}
+			}
+			
+			con.close();
+			stmt.close();
+			rs.close();
+			
 			
 		}
 }

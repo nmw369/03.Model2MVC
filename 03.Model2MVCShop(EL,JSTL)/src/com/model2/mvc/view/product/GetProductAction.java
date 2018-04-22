@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.service.product.ProductService;
+import com.model2.mvc.service.product.dao.ProductDAO;
 import com.model2.mvc.service.product.impl.ProductServiceImpl;
 import com.model2.mvc.service.purchase.impl.PurchaseServiceImpl;
 import com.model2.mvc.service.domain.Product;
@@ -21,13 +22,13 @@ public class GetProductAction extends Action{
 		
 		String menu = request.getParameter("menu"); // request객체가 가지는 "menu"의 이름을 가지는 value값을 String menu에 대입
 		System.out.println("get product action 내부 request.getParameter menu : "+menu);
-		int productNo=Integer.parseInt(request.getParameter("prodNo"));
+		int prodNo=Integer.parseInt(request.getParameter("prodNo"));
 		//"prodNo"이름을 가지는 parameter를 request객체로부터 불러와서 Integer로 만들어준 후, productNo에 대입.
-		System.out.println("productNo : "+productNo);
+		System.out.println("productNo : "+prodNo);
 		
 		ProductService service=new ProductServiceImpl(); 
 		//service 라는 이름을 가지는 ProductService 객체를 생성 : ProductServiceImpl(실제로 구현된 ProductServiceImpl의 메소드를 쓸 예정)
-		Product vo=service.getProduct(productNo);
+		Product vo=service.getProduct(prodNo);
 		
 		request.setAttribute("vo", vo); //request 객체에 "vo" 라는 이름으로 vo 속성부여
 				
@@ -60,14 +61,14 @@ public class GetProductAction extends Action{
 			for(int i = 0; i < cookies.length; i++){ //cookies라는 list에 존재하는 모든 cookie들에 대하여 
 				if(cookies[i].getName().equals("history")){ // cookies[]에 각각의 cookie 이름에 "history"라는 name을 가지는 cookie가 존재한다면
 					cookie = cookies[i];
-					cookie.setValue(cookies[i].getValue()+","+productNo); // 그 cookie에 history 라는 이름을 가진 cookie 객체를 생성한다.
+					cookie.setValue(cookies[i].getValue()+","+prodNo); // 그 cookie에 history 라는 이름을 가진 cookie 객체를 생성한다.
 					cookie.setMaxAge(60*10); //쿠키의 소멸예정시각 10분
 					
 				}
 			}
 			
 			if(cookie == null){ //for문을 다 돌려서 모든 cookie를 검색해도 history 이름을 가진 cookie가 존재하지 않는다면,
-				cookie = new Cookie("history", ""+productNo); //
+				cookie = new Cookie("history", ""+prodNo); //
 				cookie.setMaxAge(60*10);
 			}
 			response.addCookie(cookie);
@@ -76,9 +77,24 @@ public class GetProductAction extends Action{
 			}
 			
 			
+			//!상품클릭시 조회수 상승을 위한 로직
+			
+			/*request.getParameter("lookup");
+			int lookup = Integer.parseInt(request.getParameter("lookup"));
+			System.out.println("조회수 들어온값 확인 =====:::"+lookup);*/
+			//필요없어짐 prodNo만있으면됨
+			String lookup = request.getParameter("lookup");
+			System.out.println(lookup+"***********lookup체크한것");
+			if(lookup!=null && lookup.equals("yes")) {
+			ProductDAO prod = new ProductDAO();
+			prod.updatelookup(prodNo);
+			System.out.println("updateLookup메소드실행완료======");
+			}
 			
 			
-			return "forward:/product/getProduct.jsp?productNo"+productNo;
+			
+			
+			return "forward:/product/getProduct.jsp?productNo"+prodNo;
 		}
 	}//end of execute
 }

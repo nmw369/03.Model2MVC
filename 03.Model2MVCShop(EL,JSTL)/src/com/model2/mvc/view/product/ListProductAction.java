@@ -113,7 +113,8 @@ public class ListProductAction extends Action {
 		System.out.println("===============Map에 담긴값::::"+map.get("list"));
 		System.out.println("/////listProduct Action class execute end : b4 return/////"); 
 		
-		//return "forward:"+uri;
+		
+		
 		return "forward:/product/listProduct.jsp";
 	}
 }

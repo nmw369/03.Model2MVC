@@ -132,7 +132,7 @@
 		</td>
 		<td class="ct_line02"></td>
 		<td class="ct_list_b" width="150">
-		<c:if test="${daysorting==''||daysorting=='lowDay'}">
+		<c:if test="${empty daysorting||daysorting=='lowDay'}">
 		<input type="hidden" name="daysorting" value="${daysorting}">
 		<input type="button" onClick="location.href='/listProduct.do?daysorting=highDay'" value="ÃÖ½Å¼ø&Delta;">
 				</c:if>
@@ -174,7 +174,12 @@
 		</td>
 		<td></td>
 		<td align="center">
+		<c:if test="${user.role=='user' }">
+		<a href="/getProduct.do?prodNo=${product.prodNo}&menu=${param.menu}&tranCode=${product.proTranCode}&lookup=yes">${product.prodName}</a>
+		</c:if>
+		<c:if test="${user.role=='admin' }">
 		<a href="/getProduct.do?prodNo=${product.prodNo}&menu=${param.menu}&tranCode=${product.proTranCode}">${product.prodName}</a>
+		</c:if>
 		</td>
 		<td></td>
 		<td align="center">${product.price}</td>
