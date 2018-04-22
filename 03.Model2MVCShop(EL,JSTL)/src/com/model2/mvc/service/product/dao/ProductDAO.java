@@ -382,7 +382,7 @@ public class ProductDAO {
 					
 					stmt.executeQuery();
 					
-					String sql3="update product set today=? where prod_name=?";
+					String sql3="update product set today=? ,lookup='1' where prod_name=?";
 					stmt = con.prepareStatement(sql3);
 					stmt.setString(1, date.format(today));
 					stmt.setString(2, rs.getString(2));
