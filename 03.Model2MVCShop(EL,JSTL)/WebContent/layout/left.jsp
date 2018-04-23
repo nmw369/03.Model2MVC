@@ -72,6 +72,11 @@ function history(){
 			<tr>
 				<td class="DepthEnd">&nbsp;</td>
 			</tr>
+			<tr>
+				<td class="Depth03">
+					<a href="/cancel.do" target="rightFrame">구매취소목록</a>
+				</td>
+			</tr>
 		</table>
 	</td>
 </tr>

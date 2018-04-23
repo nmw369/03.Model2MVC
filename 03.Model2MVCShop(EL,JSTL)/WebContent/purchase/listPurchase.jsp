@@ -98,7 +98,7 @@ body{
 				<td class="ct_line02"></td>
 				<td class="ct_list_b">구매정보확인/수정</td>
 				<td class="ct_line02"></td>
-				<td class="ct_list_b">배송현황</td>
+				<td class="ct_list_b">상품현황</td>
 				
 			</tr>
 							
@@ -165,7 +165,16 @@ body{
 								</c:if>
 								<c:if test="${vo.tranCode=='4'}">
 									<td class="ct_list_test1" align="left">배송완료</td>
-								</c:if>								
+								</c:if>
+								<c:if test="${vo.tranCode=='5'}">
+									<td class="ct_list_test1" align="left">구매취소진행중</td>
+								</c:if>
+								<c:if test="${vo.tranCode=='6'}">
+									<td class="ct_list_test1" align="left">구매취소완료</td>
+								</c:if>
+								<c:if test="${vo.tranCode=='7'}">
+									<td class="ct_list_test1" align="left">구매취소가 거절되었습니다</td>
+								</c:if>									
 								<td></td>
 								
 								

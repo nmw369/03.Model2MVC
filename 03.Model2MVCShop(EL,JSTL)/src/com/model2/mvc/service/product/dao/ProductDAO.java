@@ -57,7 +57,7 @@ public class ProductDAO {
 
 		//String sql = "SELECT * FROM product WHERE prod_no=?";
 		
-		String sql ="select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date,p.now_count, nvl(t.tran_status_code,1)"
+		String sql ="select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date,p.nea, nvl(t.tran_status_code,1)"
 				+ " from transaction t, product p"
 				+ " where t.prod_no(+)=p.prod_no and p.prod_no=?";
 		
@@ -79,6 +79,7 @@ public class ProductDAO {
 			product.setRegDate(rs.getDate(7));
 			product.setnEA(rs.getInt(8));
 			product.setProTranCode(rs.getString(9).trim());
+			
 		}
 		
 		System.out.println("product.getProdNo() : "+product.getProdNo());
@@ -113,7 +114,7 @@ public class ProductDAO {
 		
 		sql += " ORDER BY prod_no";*/
 		
-		String sql = "select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date,p.lookup,p.now_count,nvl(t.tran_status_code,1)"
+		String sql = "select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date,p.lookup,p.nea,nvl(t.tran_status_code,1)"
 				+ " from transaction t, product p"
 				+ " where t.prod_no(+)=p.prod_no";
 		
@@ -196,7 +197,13 @@ public class ProductDAO {
 			product.setRegDate(rs.getDate(7));
 			product.setLookup(rs.getInt(8));
 			product.setnEA(rs.getInt(9));
+			int temp = Integer.parseInt(rs.getString(10).trim());
+			System.out.println(temp+":::tranCode 들어온거 확인");
+			if(temp >= 5) {
+				product.setProTranCode("1");
+			}else {
 			product.setProTranCode(rs.getString(10).trim());
+			}
 			list.add(product);
 		}
 		
@@ -408,6 +415,8 @@ public class ProductDAO {
 			
 		}
 		
+		
+		
 		public Map<String,Object> lookuplist(String day) throws Exception{
 			
 			System.out.println("/////main method start/////");
@@ -419,7 +428,7 @@ public class ProductDAO {
 			
 			String sql = "select * from lookup where lookup_date=?";
 			
-			sql += " order by lookup desc nulls last";
+			sql += " order by prod_Name desc nulls last";
 			
 					
 			System.out.println("ProductDAO::Original SQL :: " + sql);
@@ -458,4 +467,43 @@ public class ProductDAO {
 			return map;
 			
 		}
+		
+		
+		
+		
+		
+		
+		
+		//분할구매 시 업데이트
+		public void updateEA(int sEA,Product prod) throws Exception{
+			Connection con = DBUtil.getConnection();
+			
+			String sql ="update product set nea=? where prod_Name=?";
+			
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, (prod.getnEA()-sEA));
+			stmt.setString(2, prod.getProdName());
+			stmt.executeUpdate();
+			
+			stmt.close();
+			con.close();
+			
+		}
+		
+		public void cancelEA(int sEA,Product prod) throws Exception{
+			Connection con = DBUtil.getConnection();
+			
+			String sql ="update product set nea=? where prod_Name=?";
+			
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, (prod.getnEA()+sEA));
+			stmt.setString(2, prod.getProdName());
+			stmt.executeUpdate();
+			
+			stmt.close();
+			con.close();
+			
+		}
+		
+		
 }

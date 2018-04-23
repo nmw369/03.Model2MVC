@@ -191,7 +191,10 @@
 		<td align="center">${product.nEA}</td>
 		<td align="center">
 					
-				<c:if test="${product.proTranCode == '1' }">
+				<c:if test="${product.proTranCode == '1' ||product.proTranCode == '5'||product.proTranCode == '6' && user.role=='user'}">
+						<td align="center">판매중</td>
+					</c:if>
+					<c:if test="${product.proTranCode == '1' && user.role=='admin'}">
 						<td align="center">판매중</td>
 					</c:if>					
 					<c:if test="${product.proTranCode == '2' }">

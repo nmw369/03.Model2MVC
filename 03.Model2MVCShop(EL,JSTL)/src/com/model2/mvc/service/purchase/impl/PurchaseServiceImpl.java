@@ -97,12 +97,11 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public void deletePurchase(int tranNo) throws Exception {
+	public void deletePurchase(Purchase purchase) throws Exception {
 		// TODO Auto-generated method stub
-		this.purchaseServiceDAO.deletePurchase(tranNo);
+		this.purchaseServiceDAO.deletePurchase(purchase);
 		
 	}
-
 	
 	
 	
