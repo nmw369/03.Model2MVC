@@ -425,10 +425,61 @@ public class ProductDAO {
 			
 			Connection con = DBUtil.getConnection();
 			
+			Date today = new Date();
+			SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
 			
-			String sql = "select * from lookup where lookup_date=?";
+			String sql ="";
+			String temp = date.format(today);
+			System.out.println(day+"----전달받은날짜------");
+			System.out.println(temp+"----비교할날짜------");
 			
-			sql += " order by prod_Name desc nulls last";
+			
+			
+			if(temp.equals(day)) {
+				
+				sql = "select prod_name , lookup ,today from product where today=?";
+				
+				sql += " order by prod_Name desc nulls last";
+				
+				System.out.println("ProductDAO::Original SQL :: " + sql);
+				
+				/*int totalCount = this.getTotalCount(sql);
+				System.out.println("ProductDAO :: totalCount :: "+totalCount);*/
+				
+				//==> CurrentPage 게시물만 받도록 Query 다시구성
+				
+				PreparedStatement pStmt = con.prepareStatement(sql);
+				pStmt.setString(1, day);
+				ResultSet rs = pStmt.executeQuery();
+				
+				List<Product> lookuplist = new ArrayList<Product>();
+				
+				while(rs.next()){
+					Product product = new Product();
+					product.setProdName(rs.getString(1));
+					product.setLookup(rs.getInt(2));
+					product.setManuDate(rs.getString(3));
+					
+					lookuplist.add(product);
+				}
+				
+				//==> totalCount 정보 저장
+//				map.put("totalCount", new Integer(totalCount));
+				//==> currentPage 의 게시물 정보 갖는 List 저장
+				
+				map.put("lookuplist", lookuplist);
+				
+				rs.close();
+				pStmt.close();
+				con.close();
+				
+			}else {
+				sql = "select * from lookup where lookup_date=?";
+				
+				sql += " order by prod_Name desc nulls last";
+			
+			
+			
 			
 					
 			System.out.println("ProductDAO::Original SQL :: " + sql);
@@ -456,12 +507,13 @@ public class ProductDAO {
 			//==> totalCount 정보 저장
 //			map.put("totalCount", new Integer(totalCount));
 			//==> currentPage 의 게시물 정보 갖는 List 저장
+			
 			map.put("lookuplist", lookuplist);
 			
 			rs.close();
 			pStmt.close();
 			con.close();
-			
+			}
 			System.out.println("/////getlookuplist method end..../////");
 			
 			return map;
@@ -504,6 +556,36 @@ public class ProductDAO {
 			con.close();
 			
 		}
+		//오늘의 실시간 차트 조회
 		
+		/*public Map<String , Object> todaychart(String today) throws Exception{
+			Connection con = DBUtil.getConnection();
+			
+			String sql ="select prod_Name , lookup from product where today=?";
+			
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, today);
+			stmt.executeUpdate();
+			ResultSet rs = stmt.executeQuery();
+			Map<String, Object> map = new HashMap<String, Object>();
+			List<Product> prodlist = new ArrayList<Product>();
+			
+			while(rs.next()) {
+				Product product = new Product();
+				product.setProdName(rs.getString(1));
+				product.setLookup(rs.getInt(2));
+				
+				prodlist.add(product);
+			}
+			
+			map.put("prodlist", prodlist);
+			
+			stmt.close();
+			rs.close();
+			con.close();
+			
+			return map;
+		}
+		*/
 		
 }

@@ -21,6 +21,11 @@
 function history(){
 	popWin = window.open("/history.jsp","popWin","left=300, top=200, width=300, height=200, marginwidth=0, marginheight=0, scrollbars=no, scrolling=no, menubar=no, resizable=no");
 }
+
+function chating() {
+	popWin 
+		= window.open("/chating.do","popWin", "left=300,top=200,width=500,height=200,marginwidth=0,marginheight=0,scrollbars=no,scrolling=no,menubar=no,resizable=no");
+}
 </script>
 
 </head>
@@ -109,6 +114,11 @@ function history(){
 			<tr>
 				<td class="Depth03">
 					<a href="/mainView.do" target="rightFrame">Home</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="Depth03">
+					<a href="javascript:chating()">실시간상담</a>
 				</td>
 			</tr>
 		</table>

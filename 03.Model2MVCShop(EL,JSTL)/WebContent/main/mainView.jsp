@@ -6,11 +6,15 @@
 <html>
 <head>
 	<link rel="stylesheet" href="/css/admin.css" type="text/css" >
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net\/bxslider/4.2.12/jquery.bxslider.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
   
-   
+    <!-- <script type="text/javascript">
+    playAlert = setInterval(function() {
+		   alert('스크립트경고창확인');
+	}, 3000);
+    </script> -->
   
   
 <c:if test="${user.role!= 'admin' }">
@@ -62,8 +66,8 @@
 
 	<!-- 여기에 차트가 생성됩니다. -->
 	
-	<c:if test="${start=='chart'}">
-		<c:if test="${!empty lookuplist}">
+	<%-- <c:if test="${start=='chart' || empty manuDate}"> --%>
+		<%-- <c:if test="${!empty lookuplist}"> --%>
 	<script type="text/javascript">
 		
 		
@@ -72,6 +76,8 @@
 	
 	function drawChart() {
 		
+		var test = "${a}";
+		alert(test);
 		
 		
 	// 차트 데이터 설정
@@ -104,18 +110,18 @@
 		var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
 		chart.draw(data, options);
 		}
-	
+		
 	
 	</script>
 		</c:if>
-  		</c:if>
- 	</c:if>
+  		<%-- </c:if> --%>
+ 	<%-- </c:if> --%>
   </head>
 <body>
 				
 		<c:if test="${user.role== 'admin' }">
 		
-		<form name="detailForm" method="post" action="/mainView.do?today">
+		<form name="detailForm" method="post" action="/mainView.do">
 			<h3 align="center">조회할 날짜를 선택하세요.</h3>
 				
 				<p align="center"><input type="text" name="manuDate" readonly="readonly" class="ct_input_g"  
@@ -132,13 +138,14 @@
 		</p>
 		<c:if test="${start=='chart'}">		
 		<h4 align="center">${day} 의 조회수 차트입니다.</h4>
-		</c:if>
+		
 		<!-- 차트호출 -->
 		<div id="chart_div"></div>
-		</form>
-		<c:if test="${empty lookuplist}">
 		</c:if>
 		
+		</form>
+		
+				
 		<c:if test="${!empty lookuplist}">
 		<c:if test="${!empty start && start=='yes'}">
 			<h4 align="center">${day} 의 조회수 목록입니다.</h4>
@@ -162,7 +169,7 @@
 			<td></td>
 			</tr>
 			</c:forEach>
-		</c:if>
+		
 		</table>
 		</c:if>
 		
@@ -170,6 +177,7 @@
 		
 		<c:if test="${empty lookuplist && user.role== 'admin'}">
 			<h3 align="center">선택된 날짜의 데이터가 없습니다. 다른 날짜를 선택해 주세요</h3>
+		</c:if>
 		</c:if>
 		
 <c:if test="${user.role!= 'admin' }">

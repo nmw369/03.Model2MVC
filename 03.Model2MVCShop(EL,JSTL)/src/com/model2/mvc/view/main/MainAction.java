@@ -28,13 +28,33 @@ public class MainAction extends Action{
 		
 		String day = request.getParameter("manuDate").replaceAll("-", "");
 		//달력값 날짜
+		
+			
 		request.setAttribute("pday", day);
 		
+		
 		map = new ProductDAO().lookuplist(day);
+		
+		
 		request.setAttribute("lookuplist", map.get("lookuplist"));
 		
 		System.out.println(day+"=====::parsing한 날짜");
 		
+		}else {
+			Date today = new Date();
+			SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+			
+			String day = date.format(today);
+			//달력값 날짜
+			
+				
+			request.setAttribute("pday", day);
+			
+			
+			map = new ProductDAO().lookuplist(day);
+			
+			
+			request.setAttribute("lookuplist", map.get("lookuplist"));
 		}
 		
 		System.out.println("조회수 리스트 체크:::"+request.getAttribute("lookuplist"));
@@ -83,6 +103,13 @@ public class MainAction extends Action{
 	    ///차트랑 리스트 날짜 별 조회
 	    System.out.println(request.getParameter("manuDate")+"::::날짜 체크!!!");
 	    request.setAttribute("manuDate", request.getParameter(date.format(today)));
+	    
+	    request.setAttribute("a" ,"자전거");
+	    
+	    //오늘의 실시간 차트 조회
+	  
+	    
+	    
 	    
 		return "forward:/main/mainView.jsp";
 	   
