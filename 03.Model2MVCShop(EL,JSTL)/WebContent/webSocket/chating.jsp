@@ -29,10 +29,10 @@
       onMessage(event)
     };
     function onMessage(event) {
-    	if('${user.role}'=="admin"){
-    		textarea.value +=  "user: " + event.data + "\n";
-    	}else{
-    		textarea.value +=  "¿î¿µÀÚ: " + event.data + "\n";	
+    	if('${user.role}'=="user"){
+    		textarea.value +=  "¿î¿µÀÚ"+":z " + event.data + "\n";
+    	}else if('${user.role}'=="admin"){
+    		textarea.value +=  "${clientIP}"+":x " + event.data + "\n";	
     	}
         
         
@@ -49,9 +49,16 @@
       alert(event.data);
     }
     function send() {
-        textarea.value += '${user.userId}'+" : " + inputMessage.value + "\n";
+    	if('${user.role}'=="user"){
+        textarea.value += "${user.userId}"+" º¸³¿1: " + inputMessage.value + "\n";
         webSocket.send(inputMessage.value);
         inputMessage.value = "";
+    	}else if('${user.role}'=="admin"){
+    		textarea.value += "${user.userId}"+" º¸³¿2: " + inputMessage.value + "\n";
+            webSocket.send(inputMessage.value);
+            inputMessage.value = "";	
+    	}
+    	
     }
   </script>
 </html>

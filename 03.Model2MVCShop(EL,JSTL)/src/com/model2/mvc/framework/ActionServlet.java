@@ -1,7 +1,9 @@
 package com.model2.mvc.framework;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +19,20 @@ public class ActionServlet extends HttpServlet {
 	
 	///Method
 	@Override
-	public void init() throws ServletException {
+	public void init() throws ServletException{
 		super.init();
 		String resources=getServletConfig().getInitParameter("resources");
 		requestMapping=RequestMapping.getInstance(resources);
+		
+		try {
+		 InetAddress local = InetAddress.getLocalHost();
+	     System.out.println("My PC IP :" + local.getHostAddress());
+	     String IP = local.getHostAddress();
+	     ServletContext application = this.getServletContext();
+	     application.setAttribute("serverIP", IP);
+		}catch (Exception e) {
+			e.getMessage();// TODO: handle exception
+		}
 	}
 
 	@Override

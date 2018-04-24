@@ -185,4 +185,72 @@ public class UserDao {
 		
 		return sql;
 	}
+	
+	public void insertIP(String ip) throws Exception{
+		Connection con = DBUtil.getConnection();
+		String sql = "INSERT INTO CLIENTIP VALUES(?,sysdate)";
+		PreparedStatement stmt = con.prepareStatement(sql);
+		stmt.setString(1, ip);
+		stmt.executeQuery();
+		
+		con.close();
+		stmt.close();
+		}
+	
+	public void updateIP(String ip) throws Exception{
+		Connection con = DBUtil.getConnection();
+		String sql = "UPDATE CLIENTIP SET inday = sysdate where ip=?";
+		PreparedStatement stmt = con.prepareStatement(sql);
+		stmt.setString(1, ip);
+		stmt.executeQuery();
+		
+		con.close();
+		stmt.close();
+		}
+	
+	
+	public void checkIP(String ip) throws Exception{
+		Connection con = DBUtil.getConnection();
+		String sql = "SELECT ip FROM clientIP";
+		PreparedStatement stmt = con.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		
+		List<String> iplist = new ArrayList<String>();
+		
+		while(rs.next()) {
+			iplist.add(rs.getString(1));
+		}
+		
+		int count = 0;
+		
+		for (int i = 0; i < iplist.size(); i++) {
+			if(iplist.get(i).equals(ip)) {
+				count++;
+				new UserDao().updateIP(ip);
+			}
+		}
+		
+		if(count==0) {
+			new UserDao().insertIP(ip);
+		}
+		
+		
+	}
+	
+	public Map<String, Object> findIP(String ip) throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		Connection con = DBUtil.getConnection();
+		String sql = "SELECT ip FROM clientIP";
+		PreparedStatement stmt = con.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		
+		List<String> iplist = new ArrayList<String>();
+		
+		while(rs.next()) {
+			iplist.add(rs.getString(1));
+		}
+		
+		return map;
+	}
 }

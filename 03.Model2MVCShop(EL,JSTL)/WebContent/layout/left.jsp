@@ -121,6 +121,11 @@ function chating() {
 					<a href="javascript:chating()">실시간상담</a>
 				</td>
 			</tr>
+			<tr>
+				<td class="Depth03">
+					<a href="https://docs.oracle.com/javaee/7/api/javax/websocket/package-summary.html">채팅API</a>
+				</td>
+			</tr>
 		</table>
 	</td>
 </tr>
