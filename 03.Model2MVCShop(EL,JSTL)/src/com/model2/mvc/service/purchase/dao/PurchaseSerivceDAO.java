@@ -26,7 +26,7 @@ public class PurchaseSerivceDAO {
 	
 	public void insertPurchase(Purchase purchase) throws Exception{
 				
-		String sql = "insert into transaction values(seq_transaction_tran_no.nextval,?,?,?,?,?,?,?,?,sysdate,to_date(?,'YYYY-MM-DD'),?)";
+		String sql = "";
 		Connection con = DBUtil.getConnection();
 		PreparedStatement stmt = con.prepareStatement(sql);
 		
