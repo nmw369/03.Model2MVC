@@ -17,6 +17,7 @@ public class Product {
 	private int nEA;
 	private int sEA;
 	private int totalEA;
+	private int cancelCode;
 	
 	
 	public Product(){
@@ -27,6 +28,32 @@ public class Product {
 
 
 	
+
+
+
+
+	public int getCancelCode() {
+		return cancelCode;
+	}
+
+
+
+
+
+
+
+
+
+
+	public void setCancelCode(int cancelCode) {
+		this.cancelCode = cancelCode;
+	}
+
+
+
+
+
+
 
 
 

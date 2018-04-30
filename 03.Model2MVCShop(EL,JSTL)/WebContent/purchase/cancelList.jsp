@@ -35,7 +35,7 @@ body{
 	
 		<div style="width: 98%; margin-left: 10px;">
 		
-		<form name="detailForm" action="/listPurchase.do" method="post">
+		<form name="detailForm" action="/cancelList.do" method="post">
 		
 		<table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 			<tr>
@@ -111,7 +111,7 @@ body{
 								</td>
 								<td></td>
 	
-								<c:if test="${vo.tranCode=='5'}">
+								<c:if test="${vo.cancelCode=='1'}">
 									<td class="ct_list_test1" align="left">구매취소신청됨 
 									<a href="/updateTranCodeByProd.do?prodNo=${vo.purchaseProd.prodNo}&tranCode=${vo.purchaseProd.proTranCode}">허가</a> 
 									<a href="/updateTranCodeByProd.do?prodNo=${vo.purchaseProd.prodNo}&tranCode=${vo.purchaseProd.proTranCode+1}">거절</a>
@@ -119,8 +119,8 @@ body{
 									
 									
 								</c:if>
-								<c:if test="${vo.tranCode=='6'}">
-									<td class="ct_list_test1" align="left">구매취소완료</td>
+								<c:if test="${vo.cancelCode=='2'}">
+									<td class="ct_list_test1" align="left">구매취소처리함</td>
 								</c:if>								
 								<td></td>
 								

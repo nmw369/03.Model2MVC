@@ -71,7 +71,7 @@ function chating() {
 			</tr>
 			<tr>
 				<td class="Depth03">
-					<a href="/listProduct.do?menu=manage"  target="rightFrame">魄概惑前包府</a>
+					<a href="/listProduct.do?menu=manage"  target="rightFrame">惑前包府</a>
 				</td>
 			</tr>
 			<tr>
@@ -79,7 +79,12 @@ function chating() {
 			</tr>
 			<tr>
 				<td class="Depth03">
-					<a href="/cancel.do" target="rightFrame">备概秒家格废</a>
+					<a href="/listSale.do?"  target="rightFrame">魄概等惑前包府</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="Depth03">
+					<a href="/cancelList.do" target="rightFrame">备概秒家格废</a>
 				</td>
 			</tr>
 		</table>

@@ -191,47 +191,27 @@
 		<td align="center">${product.nEA}</td>
 		<td align="center">
 					
-				<c:if test="${product.proTranCode == '1' ||product.proTranCode == '5'||product.proTranCode == '6' && user.role=='user'}">
+				<c:if test="${product.proTranCode != '0' && !empty user}">
 						<td align="center">판매중</td>
 					</c:if>
-					<c:if test="${product.proTranCode == '1' && user.role=='admin'}">
-						<td align="center">판매중</td>
-					</c:if>					
-					<c:if test="${product.proTranCode == '2' }">
+				
+				<c:if test="${product.proTranCode == '0' }">
 						<c:if test="${user.role=='admin' }">
-							<td align="center">판매완료
-								<c:if test="${param.menu=='manage'}">
-										<a href="/updateTranCodeByProd.do?prodNo=${product.prodNo}&tranCode=${product.proTranCode}">배송하기</a>
-									</c:if>
-								</td>
-								</c:if>
-								<c:if test="${user.role=='user' }">
-								<td align="center">재고없음</td>	
-								</c:if>		
-							
-							</c:if>
-						<c:if test="${product.proTranCode == '3' }">
-							<c:if test="${user.role=='admin' }">
-								<td align="center">배송중</td>
-								</c:if>		
-							<c:if test="${user.role=='user' }">
-								<td align="center">재고없음</td>	
-								</c:if>
-							</c:if>
-						<c:if test="${product.proTranCode == '4' }">
-							<c:if test="${user.role=='admin' }">
-								<td align="center">배송완료</td>
-								</c:if>		
-							<c:if test="${user.role=='user'}">
-								<td align="center">재고없음</td>	
-							</c:if>
+							<td align="center">재고없음</td>
+					
 						</c:if>
+						<c:if test="${user.role=='user' }">
+							<td align="center">매진</td>	
+						</c:if>		
+							
+				</c:if>
+						
 					</tr>
 					<tr>
 						<td colspan="11" bgcolor="D6D7D6" height="1"></td>
 					</tr>
 				
-	</tr>
+
 	
 	<tr>
 		<td colspan="11" bgcolor="D6D7D6" height="1"></td>

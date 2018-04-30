@@ -10,11 +10,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
   
-    <!-- <script type="text/javascript">
-    playAlert = setInterval(function() {
+    <script type="text/javascript">
+   /*  playAlert = setInterval(function() {
 		   alert('스크립트경고창확인');
-	}, 3000);
-    </script> -->
+	}, 30000000); */
+    </script>
   
   
 <c:if test="${user.role!= 'admin' }">
@@ -76,9 +76,9 @@
 	
 	function drawChart() {
 		
-		var test = "${a}";
+		/* var test = "${a}";
 		alert(test);
-		
+		 */
 		
 	// 차트 데이터 설정
 		var data = google.visualization.arrayToDataTable([

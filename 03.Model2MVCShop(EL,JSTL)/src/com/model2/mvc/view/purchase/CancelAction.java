@@ -8,20 +8,21 @@ import com.model2.mvc.framework.Action;
 import com.model2.mvc.service.domain.Purchase;
 import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.purchase.dao.PurchaseSerivceDAO;
+import com.model2.mvc.service.purchase.impl.PurchaseServiceImpl;
 
-public class DeletePurchaseAction extends Action{
+public class CancelAction extends Action{
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
 		
-		HttpSession session = request.getSession(false);
-		User user = (User) session.getAttribute("user");
+		int cancelCode = Integer.parseInt(request.getParameter("cancelCode"));
+		int tranNo = Integer.parseInt(request.getParameter("tranNo"));
 		
-		int tranNo = Integer.parseInt(request.getParameter("tranNo"));	
-		Purchase pd = new PurchaseSerivceDAO().findPurchase(tranNo);
+		Purchase purchase = new PurchaseSerivceDAO().findPurchase(tranNo);
 		
-		new PurchaseSerivceDAO().deletePurchase(pd);
+		new PurchaseSerivceDAO().updateCancel(purchase);
+		
 		
 		
 		

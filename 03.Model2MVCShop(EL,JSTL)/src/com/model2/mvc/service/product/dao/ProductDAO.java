@@ -139,7 +139,7 @@ public class ProductDAO {
 		}
 		
 		
-		System.out.println("=============왜안나오지???::::"+search.getDaySorting());
+		
 		
 		
 		if(search.getDaySorting()!=null&&search.getDaySorting().equals("highDay")){
@@ -163,7 +163,7 @@ public class ProductDAO {
 			}
 		}
 		
-		System.out.println(search.getDaySorting()+"ccccccccccccccccc"+search.getSorting()+"!!!!!!!!!!소팅한값");
+		
 		
 		
 		
@@ -177,7 +177,7 @@ public class ProductDAO {
 		//==> CurrentPage 게시물만 받도록 Query 다시구성
 		sql = makeCurrentPageSql(sql, search);
 		
-		System.out.println("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUU::::"+sql);
+		
 		
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		ResultSet rs = pStmt.executeQuery();
@@ -199,8 +199,8 @@ public class ProductDAO {
 			product.setnEA(rs.getInt(9));
 			int temp = Integer.parseInt(rs.getString(10).trim());
 			System.out.println(temp+":::tranCode 들어온거 확인");
-			if(temp >= 5) {
-				product.setProTranCode("1");
+			if(product.getnEA()<=0) {
+				product.setProTranCode("0");
 			}else {
 			product.setProTranCode(rs.getString(10).trim());
 			}
@@ -211,6 +211,9 @@ public class ProductDAO {
 		map.put("totalCount", new Integer(totalCount));
 		
 		System.out.println(map.get("totalCount"));
+		
+		//수량 check 전부팔려서 수량없으면 ProTranCode 0 넣어서 매진표시
+		
 		
 		//==> currentPage 의 게시물 정보 갖는 List 저장
 		map.put("list", list);
@@ -359,11 +362,14 @@ public class ProductDAO {
 			Date today = new Date();
 			SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
 			
-			String sql="update product set lookup = lookup+1 , today=? where prod_no=?";
+			/*String sql="update product set lookup = lookup+1 , today=? where prod_no=?";*/
+			String sql="update product set lookup = lookup+1 where prod_no=? and today=? ";
 						
+			
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, date.format(today));
-			stmt.setInt(2, prodNo);
+			stmt.setInt(1, prodNo);
+			stmt.setString(2, date.format(today));
+			
 			ResultSet rs = stmt.executeQuery();
 			
 			System.out.println("조회수 증가 완료됨!!!!!!");

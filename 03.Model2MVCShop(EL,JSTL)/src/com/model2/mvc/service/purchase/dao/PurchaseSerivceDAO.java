@@ -26,7 +26,7 @@ public class PurchaseSerivceDAO {
 	
 	public void insertPurchase(Purchase purchase) throws Exception{
 				
-		String sql = "";
+		String sql = "insert into transaction values(seq_transaction_tran_no.nextval,?,?,?,?,?,?,?,?,sysdate,to_date(?,'YYYY-MM-DD'),?,'0')";
 		Connection con = DBUtil.getConnection();
 		PreparedStatement stmt = con.prepareStatement(sql);
 		
@@ -41,6 +41,7 @@ public class PurchaseSerivceDAO {
 		stmt.setString(8, purchase.getTranCode());
 		stmt.setString(9, purchase.getDivyDate());
 		stmt.setInt(10, purchase.getsEA());
+		
 		stmt.executeUpdate();
 		
 		stmt.close();
@@ -167,9 +168,9 @@ public class PurchaseSerivceDAO {
 		
 			
 		System.out.println("map().size() : "+ map.size());
-		System.out.println("list들어간값 확인 : "+list.get(0).getReceiverName());
+		/*System.out.println("list들어간값 확인 : "+list.get(0).getReceiverName());
 		System.out.println("list들어간값 확인!!!!!! : "+list.get(0).getTranNo());
-		System.out.println("list들어간 ProdNo 확인!!!!!! : "+list.get(0).getPurchaseProd().getProdNo());
+		System.out.println("list들어간 ProdNo 확인!!!!!! : "+list.get(0).getPurchaseProd().getProdNo());*/
 			
 		
 		rs.close();
@@ -179,12 +180,7 @@ public class PurchaseSerivceDAO {
 		return map;
 				
 	}
-	public HashMap<String, Object> getSaleList(Search search){
-		
-		
-		
-		return null;
-	}
+	
 	
 	public void updatePurchase(Purchase purchase)throws Exception {
 		
@@ -223,11 +219,11 @@ public class PurchaseSerivceDAO {
 		con.close();
 	}
 	
-	public void deletePurchase(Purchase purchase) throws Exception{
+	public void updateCancel(Purchase purchase) throws Exception{
 		//동일한 물품번호의 상품인데 구매번호가 다르므로 각각제거
 		Connection con = DBUtil.getConnection();
 		
-		String sql = "update transaction set tran_status_code='5' where tran_no=?";
+		String sql = "update transaction set tran_status_code='1' where tran_no=?";
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setInt(1, purchase.getTranNo());
@@ -284,20 +280,21 @@ public class PurchaseSerivceDAO {
 				
 				return sql;
 			}
+			
 			//구매취소 리스트를 위한 로직
 			public Map<String , Object> cancelList() throws Exception{
 				
 				
 				
 				Connection con = DBUtil.getConnection();
-				String sql = "select * from transaction where tran_status_code >= '5' ";
+				String sql = "select * from transaction where cancel_code > 0 ";
 				
 								
 				PreparedStatement stmt = con.prepareStatement(sql);
 				
 				ResultSet rs = stmt.executeQuery();
 				System.out.println(sql+"::::::=====0");
-				sql="select * from transaction where tran_status_code>='5'";
+				sql="select * from transaction where cancel_code>='0'";
 				//==> TotalCount GEt
 				int totalCount = this.getTotalCount(sql);
 				System.out.println("PurchaseDAO :: totalCount :: "+totalCount);
@@ -316,13 +313,7 @@ public class PurchaseSerivceDAO {
 				while(rs.next()) {
 					
 						Purchase vo = new Purchase();
-						/*vo.setBuyer(new UserDao().findUser(rs.getString(1)));
-						vo.setReceiverName(rs.getString(2));
-						vo.setReceiverPhone(rs.getString(3));
-						vo.setTranCode(rs.getString(4));
-						vo.setTranNo(rs.getInt(5));
-						vo.setPurchaseProd(new ProductDAO().findProduct(rs.getInt(6)));
-						vo.setsEA(rs.getInt(7));*/
+						
 						
 						vo.setTranNo(rs.getInt(1));
 						vo.setPurchaseProd(new ProductDAO().findProduct(rs.getInt(2)));
@@ -343,7 +334,7 @@ public class PurchaseSerivceDAO {
 				//list 값 전송
 				map.put("list", list);
 				
-				System.out.println("canclelist들어간 ProdNo 확인!!!!!! : "+list.get(0).getPurchaseProd().getProdNo());
+				
 					
 				
 				rs.close();
@@ -352,5 +343,73 @@ public class PurchaseSerivceDAO {
 				
 				return map;
 			}
-	
+			
+			public HashMap<String, Object> getSaleList(Search search) throws Exception{
+				String sql = "select buyer_id ,receiver_name,receiver_phone,tran_status_code,tran_no,prod_no,sea from transaction where cancel_code='0'";
+				Connection con = DBUtil.getConnection();
+				
+				System.out.println(sql+"::::::=====0");
+				
+				//==> TotalCount GET
+				int totalCount = this.getTotalCount(sql);
+				System.out.println("PurchaseDAO :: totalCount :: "+totalCount);
+				
+				System.out.println(sql+"::::::=====1");
+				
+				//==> CurrentPage 게시물만 받도록 Query 다시구성
+				sql = makeCurrentPageSql(sql, search);
+				
+				System.out.println(sql+"::::::=====2");
+				
+				PreparedStatement stmt = con.prepareStatement(sql);
+				ResultSet rs = stmt.executeQuery();
+				
+				//받은 총row수 저장	
+				HashMap<String, Object> map = new HashMap<String,Object>();
+				map.put("totalCount", new Integer(totalCount));
+				
+				
+				/////////////
+						
+				List<Purchase> list = new ArrayList<Purchase>();
+				
+				//List<Product> proVo = new ArrayList<Product>();
+				
+				while(rs.next()) {
+					
+						Purchase vo = new Purchase();
+						vo.setBuyer(new UserDao().findUser(rs.getString(1)));
+						vo.setReceiverName(rs.getString(2));
+						vo.setReceiverPhone(rs.getString(3));
+						vo.setTranCode(rs.getString(4));
+						vo.setTranNo(rs.getInt(5));
+						vo.setPurchaseProd(new ProductDAO().findProduct(rs.getInt(6)));
+						vo.setsEA(rs.getInt(7));
+						
+						list.add(vo);
+						
+						
+					}
+			
+				
+				System.out.println("list.size() : "+ list.size());
+				//list 값 전송
+				map.put("list", list);
+				
+				
+					
+				System.out.println("map().size() : "+ map.size());
+				System.out.println("list들어간값 확인 : "+list.get(0).getReceiverName());
+				System.out.println("list들어간값 확인!!!!!! : "+list.get(0).getTranNo());
+				System.out.println("list들어간 ProdNo 확인!!!!!! : "+list.get(0).getPurchaseProd().getProdNo());
+					
+				
+				rs.close();
+				stmt.close();
+				con.close();
+				
+				return map;
+				
+				
+			}	
 }

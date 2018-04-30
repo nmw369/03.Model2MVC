@@ -20,12 +20,25 @@ public class Purchase {
 	private String tranCode;
 	private int tranNo;
 	private int sEA;
+	private int cancelCode;
 	
 	public Purchase(){
 	}
 	
 	
 	
+	public int getCancelCode() {
+		return cancelCode;
+	}
+
+
+
+	public void setCancelCode(int cancelCode) {
+		this.cancelCode = cancelCode;
+	}
+
+
+
 	public int getsEA() {
 		return sEA;
 	}

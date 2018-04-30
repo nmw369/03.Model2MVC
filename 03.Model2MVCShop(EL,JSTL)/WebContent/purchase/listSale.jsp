@@ -88,6 +88,8 @@
 			<tr>
 				<td class="ct_list_b" width="100">No</td>
 				<td class="ct_line02"></td>
+				<td class="ct_list_b" width="100">구매자Id</td>
+				<td class="ct_line02"></td>
 				<td class="ct_list_b" width="100">상품이미지</td>
 				<td class="ct_line02"></td>
 				<td class="ct_list_b" width="150">구매상품정보</td>
@@ -101,86 +103,82 @@
 				<td class="ct_list_b">상품현황</td>
 				
 			</tr>
-							
+				
+				<c:set var="i" value="${currentPage}"></c:set>
+				<c:set var="j" value="${pageSize}"></c:set>
+				<c:set var="k" value="2"></c:set>
+				
+				
+				<c:forEach var="vo" items="${list}">
+					<c:if test="${vo.purchaseProd.cancelCode == '0'}">					
+						<c:set var="i" value="${i*j-k}"></c:set>
+					<tr class="ct_list_pop" bgcolor="#ffffff">
+						
+						<td class="ct_list_test1" align="center">
+							<a href="/getPurchase.do?tranNo=${vo.tranNo}">
+								${i}
+							</a>
+							<c:set var="k" value="${k-1}"></c:set>
 							<c:set var="i" value="${currentPage}"></c:set>
-							<c:set var="j" value="${pageSize}"></c:set>
-							<c:set var="k" value="2"></c:set>
-							
-							
-							
-							<c:forEach var="vo" items="${list}">
-								<c:set var="i" value="${i*j-k}"></c:set>
-							<tr class="ct_list_pop" bgcolor="#ffffff">
-								
-								<td class="ct_list_test1" align="center">
-									<a href="/getPurchase.do?tranNo=${vo.tranNo}">
-										${i}
-									</a>
-									<c:set var="k" value="${k-1}"></c:set>
-									<c:set var="i" value="${currentPage}"></c:set>
-								</td>
-								<td></td>
-								<td align="center">
-								<c:if test="${!empty vo.purchaseProd.fileName}">
-								<img src = "/images/uploadFiles/${vo.purchaseProd.fileName}" width = "150">
-								</c:if>
-								<c:if test="${empty vo.purchaseProd.fileName}">
-								<img src = "/images/uploadFiles/notimage.gif" width = "150">
-								</c:if>
-								<td></td>
-								
-								<td class="ct_list_test1" align="left">
-									<a	href="/getProduct.do?prodNo=${vo.purchaseProd.prodNo}&menu=search&cancel=yes">
-										${vo.purchaseProd.prodName}
-									</a>
-								</td>
-								<td></td>
-								
-								<td class="ct_list_test1" align="left">${vo.purchaseProd.price}</td>
-								<td></td>
-								
-								<td class="ct_list_test1" align="left">${vo.sEA}</td>
-								<td></td>
-								
-								<td class="ct_list_test1" align="left">
-								<a href="/getPurchase.do?tranNo=${vo.tranNo}">
-										구매정보</a>
-								</td>
-								<td></td>
-								
-								<%-- <% if(tranCode==2){ %>
-									<td class="ct_list_test1" align="left">구매완료</td>
-								<% }else if(tranCode==3){ %>
-									<td class="ct_list_test1" align="left">배송중 ::
-									<a href="/updateTranCodeByProd.do?tranNo=<%=vo.getTranNo()%>&tranCode=<%=vo.getTranCode()%>">물건도착</a></td>
-								<% }else if(tranCode==4){ %>
-									<td class="ct_list_test1" align="left">배송완료</td>
-								<% }else{ %>
-									<td class="ct_list_test1" align="left"></td>	
-								<% } %> --%>
-								
-								<c:if test="${vo.tranCode=='2'}">
-									
-									<td class="ct_list_test1" align="left">결제완료/배송대기중</td>
-																	
-								</c:if>
-								<c:if test="${vo.tranCode=='3'}">
-									<td class="ct_list_test1" align="left">배송중 ::
-									<a href="/updateTranCodeByProd.do?tranNo=${vo.tranNo}&tranCode=${vo.tranCode}">물건도착</a></td>
-								</c:if>
-								<c:if test="${vo.tranCode=='4'}">
-									<td class="ct_list_test1" align="left">배송완료</td>
-								</c:if>
-								<td></td>
-								
-								
-								
-							</tr>
-							<tr>
-								<td colspan="11" bgcolor="D6D7D6" height="1"></td>
-							</tr>
-							</c:forEach>
-							
+						</td>
+						<td></td>
+						
+						<td class="ct_list_test1" align="left">
+							<a	href="/getUser.do?userId=${vo.buyer.userId}">
+								${vo.buyer.userId}
+							</a>
+						</td>
+						<td></td>
+						
+						<td align="center">
+						<c:if test="${!empty vo.purchaseProd.fileName}">
+						<img src = "/images/uploadFiles/${vo.purchaseProd.fileName}" width = "150">
+						</c:if>
+						<c:if test="${empty vo.purchaseProd.fileName}">
+						<img src = "/images/uploadFiles/notimage.gif" width = "150">
+						</c:if>
+						<td></td>
+						
+						<td class="ct_list_test1" align="left">
+							<a	href="/getProduct.do?prodNo=${vo.purchaseProd.prodNo}&menu=search&cancel=yes">
+								${vo.purchaseProd.prodName}
+							</a>
+						</td>
+						<td></td>
+						
+						<td class="ct_list_test1" align="left">${vo.purchaseProd.price}</td>
+						<td></td>
+						
+						<td class="ct_list_test1" align="left">${vo.sEA}</td>
+						<td></td>
+						
+						<td class="ct_list_test1" align="left">
+						<a href="/getPurchase.do?tranNo=${vo.tranNo}">
+								구매정보</a>
+						</td>
+						<td></td>
+						
+						<c:if test="${vo.tranCode=='2'}">
+							<td class="ct_list_test1" align="left">결제완료  
+							<a href="/updateTranCodeByProd.do?prodNo=${vo.purchaseProd.prodNo}&tranCode=${vo.purchaseProd.proTranCode}">배송하기</a>
+							</td>
+						</c:if>
+						<c:if test="${vo.tranCode=='3'}">
+							<td class="ct_list_test1" align="left">배송중
+						</c:if>
+						<c:if test="${vo.tranCode=='4'}">
+							<td class="ct_list_test1" align="left">배송완료</td>
+						</c:if>
+						<td></td>
+						
+						
+						
+					</tr>
+					<tr>
+						<td colspan="11" bgcolor="D6D7D6" height="1"></td>
+					</tr>
+					</c:if>
+				</c:forEach>
 		</table>
 		
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">

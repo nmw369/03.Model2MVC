@@ -22,6 +22,7 @@ public class MainAction extends Action{
 		Map<String,Object> map = new ProductDAO().mainlist();
 		request.setAttribute("list", map.get("list"));
 		//날짜별 조회수 리스트를 위한 로직
+		
 		if(request.getParameter("manuDate")!=null) {
 		//조회수리스트 제목용 날짜
 		request.setAttribute("day", request.getParameter("manuDate"));
