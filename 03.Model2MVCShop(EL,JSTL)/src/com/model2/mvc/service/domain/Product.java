@@ -18,6 +18,7 @@ public class Product {
 	private int sEA;
 	private int totalEA;
 	private int cancelCode;
+	private int eaCode;
 	
 	
 	public Product(){
@@ -28,6 +29,32 @@ public class Product {
 
 
 	
+
+
+
+
+	public int getEaCode() {
+		return eaCode;
+	}
+
+
+
+
+
+
+
+
+
+
+	public void setEaCode(int eaCode) {
+		this.eaCode = eaCode;
+	}
+
+
+
+
+
+
 
 
 
@@ -199,6 +226,7 @@ public class Product {
 	public String toString() {
 		return "ProductVO : [fileName]" + fileName
 				+ "[manuDate]" + manuDate+ "[price]" + price + "[prodDetail]" + prodDetail
-				+ "[prodName]" + prodName + "[prodNo]" + prodNo +"[proTranCode]"+proTranCode;
+				+ "[prodName]" + prodName + "[prodNo]" + prodNo +"[proTranCode]"+proTranCode
+				+"/nEA:"+nEA+"/sEA:"+sEA+"/totalEA:"+totalEA+"/cancelCode:"+cancelCode+"/eaCode:"+eaCode;
 	}	
 }

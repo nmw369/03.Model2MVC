@@ -96,7 +96,7 @@ public class PurchaseSerivceDAO {
 	} 
 	public HashMap<String, Object> getPurchaseList(Search search,String userId) throws Exception {
 		
-		String sql = "select buyer_id ,receiver_name,receiver_phone,tran_status_code,tran_no,prod_no,sea from transaction where BUyer_id='"+userId+"'";
+		String sql = "select buyer_id ,receiver_name,receiver_phone,tran_status_code,tran_no,prod_no,sea,cancel_code from transaction where BUyer_id='"+userId+"'";
 		Connection con = DBUtil.getConnection();
 		
 		System.out.println(sql+"::::::=====0");
@@ -136,6 +136,7 @@ public class PurchaseSerivceDAO {
 				vo.setTranNo(rs.getInt(5));
 				vo.setPurchaseProd(new ProductDAO().findProduct(rs.getInt(6)));
 				vo.setsEA(rs.getInt(7));
+				vo.setCancelCode(rs.getInt(8));
 				
 				list.add(vo);
 				
@@ -223,10 +224,12 @@ public class PurchaseSerivceDAO {
 		//동일한 물품번호의 상품인데 구매번호가 다르므로 각각제거
 		Connection con = DBUtil.getConnection();
 		
-		String sql = "update transaction set tran_status_code='1' where tran_no=?";
+		String sql = "update transaction set cancel_code=? where tran_no=?";
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setInt(1, purchase.getTranNo());
+		stmt.setInt(1, purchase.getCancelCode());
+		stmt.setInt(2, purchase.getTranNo());
+		
 		stmt.executeUpdate();
 		
 		new ProductDAO().cancelEA(purchase.getsEA(), purchase.getPurchaseProd());
@@ -294,7 +297,7 @@ public class PurchaseSerivceDAO {
 				
 				ResultSet rs = stmt.executeQuery();
 				System.out.println(sql+"::::::=====0");
-				sql="select * from transaction where cancel_code>='0'";
+				/*sql="select * from transaction where cancel_code>='0'";*/
 				//==> TotalCount GEt
 				int totalCount = this.getTotalCount(sql);
 				System.out.println("PurchaseDAO :: totalCount :: "+totalCount);
@@ -323,6 +326,7 @@ public class PurchaseSerivceDAO {
 						vo.setReceiverPhone(rs.getString(6));
 						vo.setTranCode(rs.getInt(9)+"");
 						vo.setsEA(rs.getInt(12));
+						vo.setCancelCode(rs.getInt(13));
 						
 						list.add(vo);
 						

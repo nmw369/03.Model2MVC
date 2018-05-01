@@ -23,10 +23,26 @@ public class CancelAction extends Action{
 		
 		new PurchaseSerivceDAO().updateCancel(purchase);
 		
+		System.out.println("cancelCode value::"+cancelCode);
+		cancelCode++;
+		System.out.println("cancelCode value::"+cancelCode);
+		
+		purchase.setCancelCode(cancelCode);
+		
+		new PurchaseSerivceDAO().updateCancel(purchase);
+		
+		HttpSession session = request.getSession(false);
+		
+		User user = (User)session.getAttribute("user");
+		String uri="";
+		if(user.getRole()!=null&&user.getRole().equals("admin")) {
+			uri="cancelList.do";
+		}else {
+			uri="listPurchase.do";
+		}
 		
 		
-		
-		return "forward:/listPurchase.do";
+		return "forward:/"+uri;
 	}
 
 }

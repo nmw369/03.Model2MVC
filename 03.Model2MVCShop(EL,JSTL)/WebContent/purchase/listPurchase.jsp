@@ -148,28 +148,27 @@
 								</td>
 								<td></td>
 								
-								<%-- <% if(tranCode==2){ %>
-									<td class="ct_list_test1" align="left">구매완료</td>
-								<% }else if(tranCode==3){ %>
-									<td class="ct_list_test1" align="left">배송중 ::
-									<a href="/updateTranCodeByProd.do?tranNo=<%=vo.getTranNo()%>&tranCode=<%=vo.getTranCode()%>">물건도착</a></td>
-								<% }else if(tranCode==4){ %>
-									<td class="ct_list_test1" align="left">배송완료</td>
-								<% }else{ %>
-									<td class="ct_list_test1" align="left"></td>	
-								<% } %> --%>
-								
-								<c:if test="${vo.tranCode=='2'}">
+									
+								<c:if test="${vo.tranCode=='2'&& vo.cancelCode=='0'}">
 									
 									<td class="ct_list_test1" align="left">결제완료/배송대기중</td>
 																	
 								</c:if>
-								<c:if test="${vo.tranCode=='3'}">
+								<c:if test="${vo.tranCode=='3' && vo.cancelCode=='0' }">
 									<td class="ct_list_test1" align="left">배송중 ::
 									<a href="/updateTranCodeByProd.do?tranNo=${vo.tranNo}&tranCode=${vo.tranCode}">물건도착</a></td>
 								</c:if>
-								<c:if test="${vo.tranCode=='4'}">
+								<c:if test="${vo.tranCode=='4' && vo.cancelCode=='0'}">
 									<td class="ct_list_test1" align="left">배송완료</td>
+								</c:if>
+								<c:if test="${vo.cancelCode=='1'}">
+									<td class="ct_list_test1" align="left">구매취소가 진행중입니다.</td>
+								</c:if>
+								<c:if test="${vo.cancelCode=='2'}">
+									<td class="ct_list_test1" align="left">구매취소가 완료되었습니다.</td>
+								</c:if>
+								<c:if test="${vo.cancelCode=='3'}">
+									<td class="ct_list_test1" align="left">구매가 거부되었습니다.</td>
 								</c:if>
 								<td></td>
 								

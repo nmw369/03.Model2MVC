@@ -20,7 +20,7 @@ public class CancelListAction extends Action{
 		Map<String, Object> map = new PurchaseSerivceDAO().cancelList();
 		
 		System.out.println(map.get("list")+"::cancel 확인");
-		System.out.println(map.get("totalCount")+"::cancel 확인");
+		System.out.println(map.get("totalCount")+"::page total 확인");
 		
 		request.setAttribute("list", map.get("list"));
 		request.setAttribute("totalCount", map.get("totalCount"));		

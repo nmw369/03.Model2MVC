@@ -26,7 +26,7 @@ public class ProductDAO {
 		
 		Connection con = DBUtil.getConnection();
 		
-		String sql = "INSERT INTO product VALUES (seq_product_prod_no.nextval,?,?,?,?,?,SYSDATE,'1',?,?,?)";
+		String sql = "INSERT INTO product VALUES (seq_product_prod_no.nextval,?,?,?,?,?,SYSDATE,'1',?,?,?,'1')";
 		
 		Date today = new Date();
 		SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
@@ -57,9 +57,9 @@ public class ProductDAO {
 
 		//String sql = "SELECT * FROM product WHERE prod_no=?";
 		
-		String sql ="select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date,p.nea, nvl(t.tran_status_code,1)"
-				+ " from transaction t, product p"
-				+ " where t.prod_no(+)=p.prod_no and p.prod_no=?";
+		String sql ="select prod_no,prod_name,prod_detail,manufacture_day,price,image_file,reg_date,nea,ea_code,lookup" 
+				+	" from  product"
+				+ " where prod_no=?";
 		
 		PreparedStatement pStmt = con.prepareStatement(sql);
 		pStmt.setInt(1, prodNo);
@@ -78,7 +78,13 @@ public class ProductDAO {
 			product.setFileName(rs.getString(6));
 			product.setRegDate(rs.getDate(7));
 			product.setnEA(rs.getInt(8));
-			product.setProTranCode(rs.getString(9).trim());
+			product.setEaCode(rs.getInt(9));
+			product.setLookup(rs.getInt(10));
+			if(product.getnEA()==0) {
+				product.setEaCode(0);	
+			}else {
+				product.setEaCode(rs.getInt(9));
+			}
 			
 		}
 		
@@ -114,9 +120,8 @@ public class ProductDAO {
 		
 		sql += " ORDER BY prod_no";*/
 		
-		String sql = "select p.prod_no,p.prod_name,p.prod_detail,p.manufacture_day,p.price,p.image_file,p.reg_date,p.lookup,p.nea,nvl(t.tran_status_code,1)"
-				+ " from transaction t, product p"
-				+ " where t.prod_no(+)=p.prod_no";
+		String sql = "select prod_no,prod_name,prod_detail,manufacture_day,price,image_file,reg_date,lookup,nea,ea_code"
+				+ " from  product";
 		
 		/*String sql = "select p.*, nvl(t.tran_status_code,1)"
 				+ " from transaction t, product p"
@@ -126,15 +131,15 @@ public class ProductDAO {
 			System.out.println("searchVO.getSearchCondition() : " + search.getSearchCondition());
 			// Search product number
 			if (search.getSearchCondition().equals("0")) {
-				sql += " and p.PROD_NO Like '%" + search.getSearchKeyword()+"%'";
+				sql += " where PROD_NO Like '%" + search.getSearchKeyword()+"%'";
 			}
 			// Search product name
 			else if (search.getSearchCondition().equals("1")) {
-				sql += " and p.PROD_NAME LIKE '%" + search.getSearchKeyword() + "%'";
+				sql += " where  PROD_NAME LIKE '%" + search.getSearchKeyword() + "%'";
 			} 
 			// Search product price
 			else if(search.getSearchCondition().equals("2")){
-				sql += " and p.PRICE Like '%" + search.getSearchKeyword()+"%'";
+				sql += " where PRICE Like '%" + search.getSearchKeyword()+"%'";
 			}
 		}
 		
@@ -145,7 +150,7 @@ public class ProductDAO {
 		if(search.getDaySorting()!=null&&search.getDaySorting().equals("highDay")){
 			
 			search.setSorting("a");
-			sql += " order by p.reg_date desc nulls last";
+			sql += " order by reg_date desc nulls last";
 			
 			System.out.println(search.getSorting()+"!!!!!!!!!!!!!!!!!!!!!!!!!여기출력");
 			
@@ -153,13 +158,13 @@ public class ProductDAO {
 			
 			search.setSorting("a");
 			System.out.println(search.getSorting()+"++++++소팅값확인+++++++");
-			sql += " order by p.reg_date asc nulls last";
+			sql += " order by reg_date asc nulls last";
 		}else if(search.getSorting()!="a"){		
 		
 			if(search.getSorting().equals("high")) {
-				sql += " order by p.price desc nulls last";
+				sql += " order by price desc nulls last";
 			}else if(search.getSorting().equals("low")){
-				sql += " order by p.price asc nulls last";
+				sql += " order by price asc nulls last";
 			}
 		}
 		
@@ -200,9 +205,9 @@ public class ProductDAO {
 			int temp = Integer.parseInt(rs.getString(10).trim());
 			System.out.println(temp+":::tranCode 들어온거 확인");
 			if(product.getnEA()<=0) {
-				product.setProTranCode("0");
+				product.setEaCode(0);
 			}else {
-			product.setProTranCode(rs.getString(10).trim());
+			product.setEaCode(rs.getInt(10));
 			}
 			list.add(product);
 		}

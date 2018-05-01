@@ -113,15 +113,18 @@ body{
 	
 								<c:if test="${vo.cancelCode=='1'}">
 									<td class="ct_list_test1" align="left">구매취소신청됨 
-									<a href="/updateTranCodeByProd.do?prodNo=${vo.purchaseProd.prodNo}&tranCode=${vo.purchaseProd.proTranCode}">허가</a> 
-									<a href="/updateTranCodeByProd.do?prodNo=${vo.purchaseProd.prodNo}&tranCode=${vo.purchaseProd.proTranCode+1}">거절</a>
+									<a href="/cancel.do?cancelCode=${vo.cancelCode}&tranNo=${vo.tranNo}">허가</a> 
+									<a href="/cancel.do?cancelCode=${vo.cancelCode+1}&tranNo=${vo.tranNo}">거절</a>
 									</td>
 									
 									
 								</c:if>
 								<c:if test="${vo.cancelCode=='2'}">
-									<td class="ct_list_test1" align="left">구매취소처리함</td>
-								</c:if>								
+									<td class="ct_list_test1" align="left">구매취소허가함</td>
+								</c:if>
+								<c:if test="${vo.cancelCode=='3'}">
+									<td class="ct_list_test1" align="left">구매취소거부함</td>
+								</c:if>									
 								<td></td>
 								
 								

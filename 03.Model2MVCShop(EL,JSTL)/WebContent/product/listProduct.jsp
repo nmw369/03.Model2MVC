@@ -191,11 +191,11 @@
 		<td align="center">${product.nEA}</td>
 		<td align="center">
 					
-				<c:if test="${product.proTranCode != '0' && !empty user}">
+				<c:if test="${product.eaCode != '0' && !empty user}">
 						<td align="center">판매중</td>
 					</c:if>
 				
-				<c:if test="${product.proTranCode == '0' }">
+				<c:if test="${product.eaCode == '0' }">
 						<c:if test="${user.role=='admin' }">
 							<td align="center">재고없음</td>
 					
