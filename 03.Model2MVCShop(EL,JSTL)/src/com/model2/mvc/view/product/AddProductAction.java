@@ -33,17 +33,7 @@ public class AddProductAction extends Action {
 		product.setTotalEA(Integer.parseInt(request.getParameter("totalEA")));
 		
 		//상품등록시 파일경로를 읽어서 현재 webContent의 images로 보내는 로직
-		/*
-		File file = new File(uri);
-	    byte[] buffer = new byte[(int)file.length()]; 
-		
-		Image image = null;
-	       
-	     	
-	     BufferedImage img = ImageIO.read(uri);
-	     File file = new File("C:/test.gif");
-	     ImageIO.write(img, "gif", file);*/
-		
+			
 		String uri = request.getParameter("fileName");
 		
 		System.out.println("넘어온 경로 !!!!!!!"+uri);
