@@ -2,7 +2,10 @@ package com.model2.mvc.view.product;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +33,7 @@ public class AddProductAction extends Action {
 		product.setTotalEA(Integer.parseInt(request.getParameter("totalEA")));
 		
 		//상품등록시 파일경로를 읽어서 현재 webContent의 images로 보내는 로직
-		/*String uri = request.getParameter("fileName");
+		/*
 		File file = new File(uri);
 	    byte[] buffer = new byte[(int)file.length()]; 
 		
@@ -38,15 +41,33 @@ public class AddProductAction extends Action {
 	       
 	     	
 	     BufferedImage img = ImageIO.read(uri);
-	     File file=new File("C:/test.gif");
-	     ImageIO.write(img, "gif", file);
-	       */
+	     File file = new File("C:/test.gif");
+	     ImageIO.write(img, "gif", file);*/
+		
+		String uri = request.getParameter("fileName");
+		
+		System.out.println("넘어온 경로 !!!!!!!"+uri);
+	    File file = new File(uri);
+	    //바이트에 동적할당 FileInputStream에 바이트넣으면 이미지 깨짐 DataInputStream사용할것
+	    byte[] bytes = new byte[(int)file.length()];
+	    DataInputStream dateInput = new DataInputStream(new FileInputStream(file));
+	    dateInput.readFully(bytes);
+	    dateInput.close();
+	    
+	    String fileName = uri.substring(uri.lastIndexOf("\\")+1, uri.indexOf(".")+4);
+	    
+	    System.out.println(fileName+"=============================================이미지 파일 이름 출력");
+	    
+	    FileOutputStream copyfile = new FileOutputStream("C:\\Users\\Bit\\git\\03.Model2MVC\\03.Model2MVCShop(EL,JSTL)\\WebContent\\images\\uploadFiles\\"+fileName);
+	    
+	    copyfile.write(bytes);
+	    copyfile.close();
 		
 		
 		
 		
 		
-		product.setFileName(request.getParameter("fileName"));
+		product.setFileName(fileName);
 		
 		
 		

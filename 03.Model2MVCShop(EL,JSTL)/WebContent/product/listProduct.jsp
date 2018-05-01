@@ -168,7 +168,7 @@
 		<td></td>
 		<td align="center">
 		<c:if test="${!empty product.fileName}">
-		<img src = "/images/uploadFiles/${product.fileName}" width = "150">
+		<img src = "/images/uploadFiles/cat.jpg" width = "150">
 		</c:if>
 		<c:if test="${empty product.fileName}">
 		<img src = "/images/uploadFiles/notimage.gif" width = "150">
