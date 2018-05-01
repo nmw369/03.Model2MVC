@@ -23,7 +23,7 @@ public class ChatingAction extends Action{
 		// TODO Auto-generated method stub
 		// 자신의 IP 출력
 	     
-	      System.out.println(request.getRemoteAddr()+"::++++접속한 클라이언트 IP 정보");
+	      System.out.println(request.getRemoteAddr()+"::채팅에 접속한 클라이언트 IP 정보");
 	      String ip = request.getRemoteAddr();
 	      
 	      /*request.setAttribute("clientIP", request.getRemoteAddr());*/
@@ -37,6 +37,11 @@ public class ChatingAction extends Action{
 	      System.out.println("출력되나요?????789::"+application.getAttribute("clientIP"));
 	      
 	      }*/
+	      
+	      //접속한 client ip systemlog io로 txt에 입력하기
+	      
+	      
+	      
 	      
 	      HttpSession session = request.getSession(false);
 	      User user = (User)session.getAttribute("user");

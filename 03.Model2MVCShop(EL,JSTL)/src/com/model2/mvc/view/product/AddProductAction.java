@@ -1,5 +1,10 @@
 package com.model2.mvc.view.product;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,8 +27,28 @@ public class AddProductAction extends Action {
 		product.setProdDetail(request.getParameter("prodDetail"));
 		product.setManuDate(request.getParameter("manuDate"));
 		product.setPrice(Integer.parseInt(request.getParameter("price")));
-		product.setFileName(request.getParameter("fileName"));
 		product.setTotalEA(Integer.parseInt(request.getParameter("totalEA")));
+		
+		//상품등록시 파일경로를 읽어서 현재 webContent의 images로 보내는 로직
+		/*String uri = request.getParameter("fileName");
+		File file = new File(uri);
+	    byte[] buffer = new byte[(int)file.length()]; 
+		
+		Image image = null;
+	       
+	     	
+	     BufferedImage img = ImageIO.read(uri);
+	     File file=new File("C:/test.gif");
+	     ImageIO.write(img, "gif", file);
+	       */
+		
+		
+		
+		
+		
+		product.setFileName(request.getParameter("fileName"));
+		
+		
 		
 		System.out.println("product : "+product);
 		

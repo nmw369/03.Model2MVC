@@ -72,6 +72,7 @@ public class PurchaseSerivceDAO {
 			vo.setOrderDate(rs.getDate(10));
 			vo.setDivyDate(rs.getString(11));
 			vo.setsEA(rs.getInt(12));
+			vo.setCancelCode(rs.getInt(13));
 			System.out.println(rs.getString(11)+"====================================!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");	
 			
 //		vo.setPurchaseProd(new ProductDAO().findProduct(rs.getInt("prod_no")));

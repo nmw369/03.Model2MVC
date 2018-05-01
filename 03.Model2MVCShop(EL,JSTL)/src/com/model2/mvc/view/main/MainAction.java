@@ -1,5 +1,8 @@
 package com.model2.mvc.view.main;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -107,7 +110,22 @@ public class MainAction extends Action{
 	    
 	    request.setAttribute("a" ,"자전거");
 	    
-	    //오늘의 실시간 차트 조회
+	    //접속한 client ip systemlog io로 txt에 입력하기
+  		  System.out.println(request.getRemoteAddr()+"::접속한 클라이언트 IP 정보");
+  	      String ip = request.getRemoteAddr();
+  		
+  	      BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\Bit\\git\\03.Model2MVC\\03.Model2MVCShop(EL,JSTL)\\IPlog\\IpLog.txt",true));
+  	      //true 쓰면 기존 파일내용에 뒤에 추가되는 내용이 append된다. default가 false이므로 써준것
+  	      
+  	      String logday = date.format(today)+"-"+time.format(today);
+  	      
+  	      String ipLog = ip+"날짜-시간:"+logday+"//접속ID:"+user.getUserId();
+  	      
+  	      bw.write(ipLog);
+  	      bw.newLine();
+  	      bw.flush();
+  	      
+  	      bw.close();
 	  
 	    
 	    
