@@ -2,8 +2,9 @@
 
 <html>
 <head>
-<title>회원가입</title>
 
+<title>회원가입</title>
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <script type="text/javascript">

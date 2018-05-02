@@ -9,7 +9,10 @@
 
 <html>
 <head>
-<title>Model2 MVC Shop</title>
+<!-- 화면 변경 -->
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+
+<title>Mobile MVC Shop</title>
 
 <link href="/css/left.css" rel="stylesheet" type="text/css">
 
@@ -23,16 +26,15 @@
 	<td height="10" >&nbsp;</td>
   </tr>
   <tr>
-    <td width="800" height="30"><h2>Model2 MVC Shop</h2></td>
+    <td width="800" height="30"><h2 align="center">Model2 MVC Shop</h2></td>
   </tr>
   <tr>
-    <td height="20" align="right" background="/images/img_bg.gif">
-	    <table width="200" border="0" cellspacing="0" cellpadding="0">
-	        <tr> 
+    <td height="20" align="center" background="/images/img_bg.gif">
+	    <table width="200"  border="0" cellspacing="0" cellpadding="0">
+	        <tr > 
 	          <td width="115">
 	          	<c:if test="${empty user }">
-		          
-		              <a href="/user/loginView.jsp" target="rightFrame">login</a>   
+		              <a href="/user/loginView.jsp" target="rightFrame" >login</a>   
 		          </c:if>        
 	          </td>
 	          

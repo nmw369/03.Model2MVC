@@ -3,6 +3,8 @@
 
 <html>
 <head>
+<!-- 화면 변경 -->
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
 <title>상품등록</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
